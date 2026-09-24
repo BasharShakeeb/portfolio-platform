@@ -111,7 +111,6 @@ type AuthContextType = {
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 };
 
@@ -142,31 +141,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error: error?.message || null };
   };
 
-  const signUp = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) return { error: error.message };
-    if (data.user) {
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        site_name: 'My Portfolio',
-        bio: '',
-        avatar_url: '',
-        social_links: {},
-      });
-      if (profileError && !profileError.message.includes('duplicate')) {
-        return { error: profileError.message };
-      }
-    }
-    return { error: null };
-  };
-
   const signOut = async () => {
     await supabase.auth.signOut();
     setSession(null);
   };
 
   return (
-    <AuthContext.Provider value={{ session, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ session, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

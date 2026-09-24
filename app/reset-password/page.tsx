@@ -39,6 +39,18 @@ export default function ResetPasswordPage() {
     // Check existing session in case the event already fired or token is cached
     const checkInitialSession = async () => {
       try {
+        if (typeof window !== 'undefined') {
+          const urlParams = new URLSearchParams(window.location.search);
+          const code = urlParams.get('code');
+          if (code) {
+            const { data, error: exchangeErr } = await supabase.auth.exchangeCodeForSession(code);
+            if (!exchangeErr && data?.session?.user) {
+              if (mounted) setHasValidSession(true);
+              return;
+            }
+          }
+        }
+
         const { data: { session } } = await supabase.auth.getSession();
         if (!mounted) return;
         if (session && session.user) {
