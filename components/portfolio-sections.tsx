@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLanguage } from '@/contexts/app-context';
 import { supabase, type Item, type Profile, type Message, type ContactSettings } from '@/lib/supabase';
 import { monthNames } from '@/lib/i18n';
-import { Search, Calendar, Tag, ExternalLink, ArrowRight, Send, Mail, MapPin, Phone, Github, Linkedin, Twitter, MessageCircle } from 'lucide-react';
+import { Search, Calendar, Tag, ExternalLink, ArrowRight, Send, Mail, MapPin, Phone, Github, Linkedin, Twitter, MessageCircle, Eye, Sparkles, Award, FolderGit2, GraduationCap, BookOpen, Layers } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CVExport } from '@/components/cv-export';
+import { ItemDetailsDialog } from '@/components/item-details-dialog';
 import { useProfile } from '@/contexts/app-context';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -23,6 +24,8 @@ export function PortfolioSections() {
   const { t, lang, dir } = useLanguage();
   const { profile, loading: profileLoading } = useProfile();
   const [items, setItems] = useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -37,6 +40,19 @@ export function PortfolioSections() {
   useEffect(() => {
     loadItems();
     loadContactSettings();
+
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (['projects', 'awards', 'certificates', 'research', 'other'].includes(hash)) {
+        setActiveCategory(hash);
+      } else if (hash === 'all') {
+        setActiveCategory('all');
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const loadContactSettings = useCallback(async () => {
@@ -179,28 +195,50 @@ export function PortfolioSections() {
               )}
               <div className="flex flex-wrap gap-3 justify-center">
                 <a href="#projects">
-                  <Button size="lg">
+                  <Button variant="brand" size="lg" className="rounded-full shadow-md font-semibold">
                     {t('hero.viewWork')}
                     <ArrowRight className="ml-2 h-4 w-4 rtl:rotate-180" />
                   </Button>
                 </a>
                 <a href="#contact">
-                  <Button variant="outline" size="lg">
+                  <Button variant="pill" size="lg" className="rounded-full shadow-xs font-medium">
                     {t('hero.contact')}
                   </Button>
                 </a>
                 <CVExport profile={profile} items={items} />
               </div>
 
+              {/* Stats Counters */}
+              {items.length > 0 && (
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-xl mx-auto p-1.5 rounded-full bg-[#FAF7F2] dark:bg-muted/40 border border-orange-100 dark:border-border shadow-xs">
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-card text-[#374151] dark:text-foreground border border-gray-200/80 dark:border-border shadow-2xs flex items-center gap-1.5">
+                    <FolderGit2 className="h-3.5 w-3.5 text-brandPrimary" />
+                    {items.filter(i => i.category === 'projects').length} {t('section.projects')}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-card text-[#374151] dark:text-foreground border border-gray-200/80 dark:border-border shadow-2xs flex items-center gap-1.5">
+                    <Award className="h-3.5 w-3.5 text-citrusAmber" />
+                    {items.filter(i => i.category === 'awards').length} {t('section.awards')}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-card text-[#374151] dark:text-foreground border border-gray-200/80 dark:border-border shadow-2xs flex items-center gap-1.5">
+                    <GraduationCap className="h-3.5 w-3.5 text-botanicalGreen" />
+                    {items.filter(i => i.category === 'certificates').length} {t('section.certificates')}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-card text-[#374151] dark:text-foreground border border-gray-200/80 dark:border-border shadow-2xs flex items-center gap-1.5">
+                    <BookOpen className="h-3.5 w-3.5 text-saleCrimson" />
+                    {items.filter(i => i.category === 'research').length} {t('section.research')}
+                  </span>
+                </div>
+              )}
+
               {/* Social links */}
               {profile?.social_links && Object.keys(profile.social_links).length > 0 && (
-                <div className="flex gap-3 justify-center mt-8">
+                <div className="flex gap-3 justify-center mt-6">
                   {Object.entries(profile.social_links).map(([key, url]) => {
                     const Icon = socialIcons[key.toLowerCase()] || ExternalLink;
                     return (
                       <a key={key} href={url} target="_blank" rel="noopener noreferrer">
-                        <Button variant="ghost" size="icon" className="rounded-full">
-                          <Icon className="h-5 w-5" />
+                        <Button variant="pill" size="icon" className="h-10 w-10 hover:border-brandPrimary hover:text-brandPrimary transition-all">
+                          <Icon className="h-4 w-4" />
                         </Button>
                       </a>
                     );
@@ -210,47 +248,47 @@ export function PortfolioSections() {
 
               {/* Dynamic contact buttons from contact_settings */}
               {contactSettings && (
-                <div className="flex flex-wrap gap-3 justify-center mt-6">
+                <div className="flex flex-wrap gap-2.5 justify-center mt-5">
                   {contactSettings.phone_visible && contactSettings.phone && (
                     <a
                       href={`https://wa.me/${contactSettings.phone.replace(/[^0-9]/g, '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <MessageCircle className="h-4 w-4" />
+                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                        <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
                         WhatsApp
                       </Button>
                     </a>
                   )}
                   {contactSettings.phone_visible && contactSettings.phone && (
                     <a href={`tel:${contactSettings.phone}`}>
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <Phone className="h-4 w-4" />
+                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                        <Phone className="h-3.5 w-3.5 text-brandPrimary" />
                         Call
                       </Button>
                     </a>
                   )}
                   {contactSettings.email_visible && contactSettings.email && (
                     <a href={`mailto:${contactSettings.email}`}>
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <Mail className="h-4 w-4" />
+                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                        <Mail className="h-3.5 w-3.5 text-blue-600" />
                         Email
                       </Button>
                     </a>
                   )}
                   {contactSettings.github_visible && contactSettings.github && (
                     <a href={contactSettings.github} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <Github className="h-4 w-4" />
+                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                        <Github className="h-3.5 w-3.5" />
                         GitHub
                       </Button>
                     </a>
                   )}
                   {contactSettings.linkedin_visible && contactSettings.linkedin && (
                     <a href={contactSettings.linkedin} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <Linkedin className="h-4 w-4" />
+                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                        <Linkedin className="h-3.5 w-3.5 text-sky-600" />
                         LinkedIn
                       </Button>
                     </a>
@@ -326,26 +364,41 @@ export function PortfolioSections() {
           </div>
 
           {/* Category tabs */}
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap items-center p-1.5 rounded-full bg-[#FAF7F2] dark:bg-muted/40 border border-orange-100 dark:border-border w-fit shadow-xs">
             <Button
-              variant={activeCategory === 'all' ? 'default' : 'outline'}
-              size="sm"
+              variant={activeCategory === 'all' ? 'pillActive' : 'pill'}
+              size="pill"
               onClick={() => setActiveCategory('all')}
+              className="text-xs transition-all duration-200"
             >
               {t('section.all')}
-              <Badge variant="secondary" className="ml-2">{items.length}</Badge>
+              <span className={cn(
+                'ml-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold transition-colors',
+                activeCategory === 'all' ? 'bg-white/20 text-white' : 'bg-orange-100 dark:bg-muted text-brandPrimary'
+              )}>
+                {items.length}
+              </span>
             </Button>
             {CATEGORIES.map((cat) => {
               const count = items.filter((i) => i.category === cat).length;
+              const isActive = activeCategory === cat;
               return (
                 <Button
                   key={cat}
-                  variant={activeCategory === cat ? 'default' : 'outline'}
-                  size="sm"
+                  variant={isActive ? 'pillActive' : 'pill'}
+                  size="pill"
                   onClick={() => setActiveCategory(cat)}
+                  className="text-xs transition-all duration-200"
                 >
                   {t(`section.${cat}` as any)}
-                  {count > 0 && <Badge variant="secondary" className="ml-2">{count}</Badge>}
+                  {count > 0 && (
+                    <span className={cn(
+                      'ml-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold transition-colors',
+                      isActive ? 'bg-white/20 text-white' : 'bg-orange-100 dark:bg-muted text-brandPrimary'
+                    )}>
+                      {count}
+                    </span>
+                  )}
                 </Button>
               );
             })}
@@ -354,7 +407,7 @@ export function PortfolioSections() {
       </section>
 
       {/* Items grid */}
-      <section className="container mx-auto px-4 py-12">
+      <section id="projects" className="container mx-auto px-4 py-12 scroll-mt-24">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -371,63 +424,103 @@ export function PortfolioSections() {
               {filtered.length} {t('search.results')}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((item) => (
-                <Card key={item.id} className="group overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 duration-300">
-                  {item.image_url && (
-                    <div className="aspect-video overflow-hidden bg-muted">
-                      <img
-                        src={item.image_url}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  )}
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <Badge variant="outline" className="mb-2 text-xs">
-                          {t(`section.${item.category}` as any) || item.category}
-                        </Badge>
-                        <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                          {item.title}
-                        </CardTitle>
-                      </div>
-                      {item.link && (
-                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
-                      )}
-                    </div>
-                    {formatDate(item) && (
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        {formatDate(item)}
+              {filtered.map((item) => {
+                const getCategoryVariant = (cat: string) => {
+                  switch (cat) {
+                    case 'projects': return 'brand';
+                    case 'awards': return 'citrus';
+                    case 'certificates': return 'botanical';
+                    case 'research': return 'sale';
+                    default: return 'pill';
+                  }
+                };
+
+                return (
+                  <Card
+                    key={item.id}
+                    id={item.category}
+                    onClick={() => {
+                      setSelectedItem(item);
+                      setDetailsOpen(true);
+                    }}
+                    className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer border border-[#e5e7eb] dark:border-border rounded-2xl bg-card hover:border-brandPrimary/30"
+                  >
+                    {item.image_url && (
+                      <div className="aspect-video overflow-hidden bg-muted relative">
+                        <img
+                          src={item.image_url}
+                          alt={item.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                          <span className="text-white text-xs font-medium flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded-full">
+                            <Eye className="h-3.5 w-3.5" />
+                            {lang === 'ar' ? 'عرض التفاصيل' : 'View Details'}
+                          </span>
+                        </div>
                       </div>
                     )}
-                  </CardHeader>
-                  <CardContent>
-                    {item.description && (
-                      <CardDescription className="line-clamp-3 mb-3">
-                        {item.description}
-                      </CardDescription>
-                    )}
-                    {item.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {item.tags.map((tag) => (
-                          <Badge key={tag} variant="secondary" className="text-xs">
-                            <Tag className="h-2.5 w-2.5 mr-1" />
-                            {tag}
+                    <CardHeader className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <Badge variant={getCategoryVariant(item.category) as any} className="mb-2 text-xs uppercase tracking-wide">
+                            {t(`section.${item.category}` as any) || item.category}
                           </Badge>
-                        ))}
+                          <CardTitle className="text-lg group-hover:text-brandPrimary transition-colors leading-snug">
+                            {item.title}
+                          </CardTitle>
+                        </div>
+                        {item.link && (
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-muted-foreground hover:text-brandPrimary p-1 rounded-full hover:bg-muted transition-colors"
+                            title={lang === 'ar' ? 'رابط خارجي' : 'External link'}
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )}
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                      {formatDate(item) && (
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                          <Calendar className="h-3 w-3 text-muted-foreground/70" />
+                          {formatDate(item)}
+                        </div>
+                      )}
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {item.description && (
+                        <CardDescription className="line-clamp-3 text-sm leading-relaxed">
+                          {item.description}
+                        </CardDescription>
+                      )}
+                      {item.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {item.tags.map((tag) => (
+                            <Badge key={tag} variant="pill" className="text-xs py-0.5 px-2">
+                              <Tag className="h-2.5 w-2.5 mr-1 text-muted-foreground" />
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </>
         )}
       </section>
+
+      {/* Details Dialog */}
+      <ItemDetailsDialog
+        item={selectedItem}
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+      />
 
       {/* Contact section */}
       <section id="contact" className="container mx-auto px-4 py-20 border-t">
@@ -435,7 +528,7 @@ export function PortfolioSections() {
           <h2 className="text-3xl font-bold text-center mb-2">{t('section.contact')}</h2>
           <p className="text-center text-muted-foreground mb-8">{t('hero.contact')}</p>
 
-          <Card>
+          <Card className="rounded-2xl border border-gray-200/80 dark:border-border shadow-md">
             <CardContent className="pt-6">
               <form onSubmit={handleContact} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -445,6 +538,7 @@ export function PortfolioSections() {
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                       required
+                      className="rounded-xl"
                     />
                   </div>
                   <div>
@@ -454,6 +548,7 @@ export function PortfolioSections() {
                       value={contactForm.email}
                       onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
                       required
+                      className="rounded-xl"
                     />
                   </div>
                 </div>
@@ -462,6 +557,7 @@ export function PortfolioSections() {
                   <Input
                     value={contactForm.subject}
                     onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                    className="rounded-xl"
                   />
                 </div>
                 <div>
@@ -471,10 +567,10 @@ export function PortfolioSections() {
                     onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                     required
                     rows={5}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   />
                 </div>
-                <Button type="submit" disabled={sending} className="w-full">
+                <Button variant="brand" type="submit" disabled={sending} className="w-full rounded-full font-semibold shadow-sm">
                   <Send className="h-4 w-4 mr-2" />
                   {sending ? t('common.loading') : t('contact.send')}
                 </Button>

@@ -51,12 +51,12 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-1 p-1 rounded-full bg-[#FAF7F2]/80 dark:bg-muted/40 border border-orange-100 dark:border-border shadow-2xs backdrop-blur-xs">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent"
+              className="px-3.5 py-1.5 text-xs font-semibold text-[#374151] dark:text-muted-foreground hover:text-brandPrimary dark:hover:text-foreground transition-all rounded-full hover:bg-white dark:hover:bg-card hover:shadow-2xs"
             >
               {link.label}
             </Link>

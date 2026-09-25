@@ -29,12 +29,12 @@ export default function Home() {
       {/* Matrix toggle button - appears in the inspector area */}
       <div className="fixed bottom-6 ltr:left-6 rtl:right-6 z-50">
         <Button
-          variant={matrixActive ? 'default' : 'outline'}
-          size="sm"
+          variant={matrixActive ? 'brand' : 'pill'}
+          size="pill"
           onClick={() => setMatrixActive(!matrixActive)}
-          className="shadow-lg"
+          className="shadow-lg border border-gray-200/80 dark:border-border font-medium"
         >
-          <Terminal className="h-4 w-4 mr-2" />
+          <Terminal className="h-3.5 w-3.5 mr-2" />
           {matrixActive ? t('matrix.deactivate') : t('matrix.activate')}
         </Button>
       </div>

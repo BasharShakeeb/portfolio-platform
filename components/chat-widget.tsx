@@ -74,43 +74,76 @@ export function ChatWidget() {
     }, 600);
   };
 
+  const handlePromptClick = (promptText: string) => {
+    setInput(promptText);
+    setTimeout(() => {
+      setMessages((prev) => [...prev, { role: 'user', text: promptText }]);
+      setSending(true);
+      setTimeout(() => {
+        setMessages((prev) => [...prev, { role: 'bot', text: getBotResponse(promptText) }]);
+        setSending(false);
+      }, 500);
+    }, 50);
+  };
+
+  const quickPrompts = lang === 'ar'
+    ? [
+        { label: '📄 السيرة الذاتية', query: 'أريد تحميل السيرة الذاتية' },
+        { label: '💼 المشاريع', query: 'حدثني عن أهم المشاريع' },
+        { label: '✉️ التواصل', query: 'كيف يمكنني التواصل معك عبر البريد؟' },
+      ]
+    : [
+        { label: '📄 Download CV', query: 'How can I download the CV?' },
+        { label: '💼 Projects', query: 'Tell me about the key projects' },
+        { label: '✉️ Contact', query: 'How can I contact you via email?' },
+      ];
+
   return (
     <>
       {!open && (
         <Button
           onClick={() => setOpen(true)}
+          variant="brand"
           size="icon"
-          className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 h-14 w-14 rounded-full shadow-lg hover:scale-110 transition-transform"
+          className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 h-14 w-14 rounded-full shadow-xl hover:scale-110 transition-transform duration-300 ring-4 ring-orange-100 dark:ring-orange-950/40"
         >
           <MessageCircle className="h-6 w-6" />
         </Button>
       )}
 
       {open && (
-        <div className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 w-80 max-w-[calc(100vw-2rem)] rounded-2xl border bg-card shadow-2xl flex flex-col animate-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 w-84 max-w-[calc(100vw-2rem)] rounded-2xl border border-gray-200/80 dark:border-border bg-card shadow-2xl flex flex-col animate-in slide-in-from-bottom-4 duration-300 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-primary text-primary-foreground rounded-t-2xl">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-                <Bot className="h-4 w-4" />
+          <div className="flex items-center justify-between p-4 bg-brandPrimary text-white">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
+                <Bot className="h-4 w-4 text-white" />
               </div>
-              <span className="font-semibold text-sm">{t('chat.title')}</span>
+              <div>
+                <span className="font-bold text-sm block leading-none">{t('chat.title')}</span>
+                <span className="text-[11px] text-white/80 font-normal">Online Assistant</span>
+              </div>
             </div>
-            <Button variant="ghost" size="icon" className="h-7 w-7 text-primary-foreground hover:bg-primary-foreground/20" onClick={() => setOpen(false)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
+              onClick={() => setOpen(false)}
+            >
               <X className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Messages */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 max-h-72 min-h-[150px]">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 max-h-72 min-h-[160px] bg-pageCanvas/50 dark:bg-card">
             {messages.map((msg, i) => (
               <div key={i} className={cn('flex', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
                 <div
                   className={cn(
-                    'max-w-[80%] rounded-2xl px-3 py-2 text-sm',
+                    'max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed',
                     msg.role === 'user'
-                      ? 'bg-primary text-primary-foreground rounded-br-sm'
-                      : 'bg-muted text-muted-foreground rounded-bl-sm'
+                      ? 'bg-brandPrimary text-white rounded-br-xs font-medium'
+                      : 'bg-white dark:bg-muted border border-gray-200/60 dark:border-border text-foreground rounded-bl-xs'
                   )}
                 >
                   {msg.text}
@@ -119,27 +152,47 @@ export function ChatWidget() {
             ))}
             {sending && (
               <div className="flex justify-start">
-                <div className="bg-muted rounded-2xl px-3 py-2 text-sm">
-                  <span className="inline-flex gap-1">
-                    <span className="h-2 w-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="h-2 w-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="h-2 w-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="bg-white dark:bg-muted border rounded-2xl px-3.5 py-2 text-sm shadow-2xs">
+                  <span className="inline-flex gap-1.5 items-center">
+                    <span className="h-2 w-2 rounded-full bg-brandPrimary animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="h-2 w-2 rounded-full bg-brandPrimary animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="h-2 w-2 rounded-full bg-brandPrimary animate-bounce" style={{ animationDelay: '300ms' }} />
                   </span>
                 </div>
               </div>
             )}
           </div>
 
+          {/* Quick Prompts Chips */}
+          <div className="px-3 py-2 bg-pulpCream/70 dark:bg-muted/30 border-t border-orange-100 dark:border-border flex gap-1.5 overflow-x-auto no-scrollbar">
+            {quickPrompts.map((p, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handlePromptClick(p.query)}
+                className="whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium bg-white dark:bg-card border border-gray-200/80 dark:border-border text-[#374151] dark:text-foreground hover:border-brandPrimary hover:text-brandPrimary hover:bg-orange-50/50 transition-all shadow-2xs"
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+
           {/* Input */}
-          <div className="p-3 border-t flex gap-2">
+          <div className="p-3 border-t bg-card flex gap-2">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder={t('chat.placeholder')}
-              className="flex-1"
+              className="flex-1 rounded-full text-xs"
             />
-            <Button size="icon" onClick={handleSend} disabled={sending}>
+            <Button
+              variant="brand"
+              size="icon"
+              onClick={handleSend}
+              disabled={sending}
+              className="rounded-full h-9 w-9 shrink-0"
+            >
               <Send className="h-4 w-4" />
             </Button>
           </div>

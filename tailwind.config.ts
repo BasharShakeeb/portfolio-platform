@@ -21,6 +21,7 @@
           lg: 'var(--radius)',
           md: 'calc(var(--radius) - 2px)',
           sm: 'calc(var(--radius) - 4px)',
+          pill: '9999px',
         },
         colors: {
           background: 'hsl(var(--background))',
@@ -63,6 +64,16 @@
             '4': 'hsl(var(--chart-4))',
             '5': 'hsl(var(--chart-5))',
           },
+          // System Design Tokens (from system-des.md)
+          pageCanvas: '#f8f9ff',
+          pulpCream: '#FAF7F2',
+          pulpBorder: '#ffedd5',
+          brandPrimary: '#a14000',
+          brandPrimaryHover: '#873600',
+          botanicalMint: '#EAF7EE',
+          botanicalGreen: '#1e6b47',
+          saleCrimson: '#F53D3D',
+          citrusAmber: '#FFA114',
         },
         keyframes: {
           'accordion-down': {

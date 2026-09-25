@@ -172,23 +172,24 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
   return (
     <>
       <Button
-        variant="outline"
-        size="sm"
+        variant="pill"
+        size="lg"
         onClick={() => setModalOpen(true)}
         disabled={!profile && items.length === 0}
+        className="rounded-full shadow-xs font-medium gap-2"
       >
-        <FileText className="h-4 w-4 mr-2" />
+        <FileText className="h-4 w-4" />
         {t('cv.download')}
       </Button>
 
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="sm:max-w-[480px]">
+        <DialogContent className="sm:max-w-[480px] rounded-2xl border border-gray-200/80 dark:border-border p-6 shadow-2xl">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-primary" />
+            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+              <FileText className="h-5 w-5 text-brandPrimary" />
               {t('cv.chooseFormat')}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-muted-foreground text-sm">
               {t('cv.chooseFormat')}
             </DialogDescription>
           </DialogHeader>
@@ -198,21 +199,21 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
             <button
               onClick={() => handleDownload('standard')}
               disabled={generating !== null}
-              className="w-full text-left rounded-xl border-2 border-border p-4 hover:border-primary hover:bg-primary/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+              className="w-full text-left rounded-2xl border-2 border-gray-200/80 dark:border-border p-4 hover:border-brandPrimary hover:bg-orange-50/30 dark:hover:bg-orange-950/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs"
             >
               <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-orange-100 dark:bg-orange-950/50 flex items-center justify-center flex-shrink-0 group-hover:bg-brandPrimary group-hover:text-white transition-colors">
                   {generating === 'standard' ? (
-                    <Loader2 className="h-5 w-5 text-primary animate-spin" />
+                    <Loader2 className="h-5 w-5 text-brandPrimary animate-spin" />
                   ) : (
-                    <FileCheck className="h-5 w-5 text-primary" />
+                    <FileCheck className="h-5 w-5 text-brandPrimary group-hover:text-white" />
                   )}
                 </div>
                 <div className="flex-1">
-                  <div className="font-semibold text-sm">{t('cv.standard')}</div>
+                  <div className="font-semibold text-sm group-hover:text-brandPrimary transition-colors">{t('cv.standard')}</div>
                   <div className="text-xs text-muted-foreground mt-1">{t('cv.standardDesc')}</div>
                 </div>
-                <Download className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors mt-1" />
+                <Download className="h-4 w-4 text-muted-foreground group-hover:text-brandPrimary transition-colors mt-1" />
               </div>
             </button>
 
@@ -220,27 +221,27 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
             <button
               onClick={() => handleDownload('ats')}
               disabled={generating !== null}
-              className="w-full text-left rounded-xl border-2 border-border p-4 hover:border-primary hover:bg-primary/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+              className="w-full text-left rounded-2xl border-2 border-gray-200/80 dark:border-border p-4 hover:border-brandPrimary hover:bg-orange-50/30 dark:hover:bg-orange-950/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs"
             >
               <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-brandPrimary group-hover:text-white transition-colors">
                   {generating === 'ats' ? (
-                    <Loader2 className="h-5 w-5 text-primary animate-spin" />
+                    <Loader2 className="h-5 w-5 text-brandPrimary animate-spin" />
                   ) : (
-                    <ScanLine className="h-5 w-5 text-foreground" />
+                    <ScanLine className="h-5 w-5 text-foreground group-hover:text-white" />
                   )}
                 </div>
                 <div className="flex-1">
-                  <div className="font-semibold text-sm">{t('cv.ats')}</div>
+                  <div className="font-semibold text-sm group-hover:text-brandPrimary transition-colors">{t('cv.ats')}</div>
                   <div className="text-xs text-muted-foreground mt-1">{t('cv.atsDesc')}</div>
                 </div>
-                <Download className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors mt-1" />
+                <Download className="h-4 w-4 text-muted-foreground group-hover:text-brandPrimary transition-colors mt-1" />
               </div>
             </button>
           </div>
 
-          <div className="flex justify-end mt-2">
-            <Button variant="ghost" size="sm" onClick={() => setModalOpen(false)}>
+          <div className="flex justify-end mt-4 pt-3 border-t">
+            <Button variant="outline" size="pill" onClick={() => setModalOpen(false)}>
               {t('cv.close')}
             </Button>
           </div>

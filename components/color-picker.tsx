@@ -9,14 +9,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 
 const presetHues = [
-  { hue: 222, name: 'Blue' },
-  { hue: 160, name: 'Green' },
-  { hue: 0, name: 'Red' },
-  { hue: 30, name: 'Orange' },
-  { hue: 45, name: 'Amber' },
+  { hue: 24, name: 'Terracotta (Brand)' },
+  { hue: 155, name: 'Botanical Mint' },
+  { hue: 38, name: 'Citrus Amber' },
+  { hue: 0, name: 'Crimson' },
+  { hue: 222, name: 'Ice Blue' },
   { hue: 280, name: 'Purple' },
   { hue: 330, name: 'Pink' },
-  { hue: 190, name: 'Cyan' },
+  { hue: 190, name: 'Teal' },
 ];
 
 export function ColorPicker() {

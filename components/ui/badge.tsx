@@ -15,6 +15,16 @@ const badgeVariants = cva(
         destructive:
           'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
         outline: 'text-foreground',
+        botanical:
+          'border-transparent bg-botanicalMint text-botanicalGreen hover:bg-botanicalMint/80 dark:bg-emerald-950/60 dark:text-emerald-400',
+        sale:
+          'border-transparent bg-saleCrimson text-white hover:bg-saleCrimson/90',
+        citrus:
+          'border-transparent bg-citrusAmber text-white hover:bg-citrusAmber/90',
+        brand:
+          'border-transparent bg-brandPrimary text-white hover:bg-brandPrimaryHover',
+        pill:
+          'border-[#e5e7eb] bg-white text-[#374151] hover:bg-gray-100 dark:bg-card dark:border-border dark:text-foreground',
       },
     },
     defaultVariants: {

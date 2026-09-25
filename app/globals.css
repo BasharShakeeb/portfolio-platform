@@ -4,57 +4,57 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 231 100% 98.6%; /* #f8f9ff pageCanvas */
+    --foreground: 220 20% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 220 20% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 222 70% 50%;
-    --primary-foreground: 222 70% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 222 60% 90%;
-    --accent-foreground: 222 70% 30%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 222 70% 50%;
-    --chart-1: 222 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
+    --popover-foreground: 220 20% 15%;
+    --primary: 24 100% 31.6%; /* #a14000 brandPrimary */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 38 43% 96.5%; /* #FAF7F2 pulpCream */
+    --secondary-foreground: 24 100% 31.6%;
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 10% 45%;
+    --accent: 38 43% 96.5%;
+    --accent-foreground: 24 100% 31.6%;
+    --destructive: 0 89% 60%; /* #F53D3D saleCrimson */
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 90%; /* #e5e7eb */
+    --input: 220 13% 90%;
+    --ring: 24 100% 31.6%;
+    --chart-1: 24 100% 31.6%;
+    --chart-2: 155 58% 27%; /* #1e6b47 botanicalGreen */
+    --chart-3: 36 100% 54%; /* #FFA114 citrusAmber */
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --radius: 0.5rem;
+    --chart-5: 0 89% 60%;
+    --radius: 1rem;
   }
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 222 70% 50%;
-    --primary-foreground: 222 70% 98%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 222 40% 15%;
-    --accent-foreground: 222 70% 90%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 222 70% 50%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
+    --background: 224 25% 9%;
+    --foreground: 220 20% 98%;
+    --card: 224 25% 12%;
+    --card-foreground: 220 20% 98%;
+    --popover: 224 25% 12%;
+    --popover-foreground: 220 20% 98%;
+    --primary: 24 95% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 224 20% 16%;
+    --secondary-foreground: 220 20% 98%;
+    --muted: 224 20% 16%;
+    --muted-foreground: 220 15% 65%;
+    --accent: 224 20% 18%;
+    --accent-foreground: 24 95% 45%;
+    --destructive: 0 75% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 224 20% 18%;
+    --input: 224 20% 18%;
+    --ring: 24 95% 45%;
+    --chart-1: 24 95% 45%;
+    --chart-2: 155 58% 45%;
+    --chart-3: 36 100% 54%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --chart-5: 0 75% 50%;
   }
 }
 
@@ -111,3 +111,65 @@
   nav, .fixed, button { display: none !important; }
   body { background: white !important; color: black !important; }
 }
+
+/* System Design Tokens utilities */
+.pill-container {
+  background-color: #FAF7F2;
+  border: 1px solid #ffedd5;
+  border-radius: 9999px;
+}
+.dark .pill-container {
+  background-color: hsl(224 20% 13%);
+  border-color: hsl(224 20% 20%);
+}
+
+.pill-button {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+.pill-button:hover {
+  background-color: #f3f4f6;
+}
+.dark .pill-button {
+  background-color: hsl(224 25% 15%);
+  border-color: hsl(224 20% 22%);
+  color: hsl(220 20% 90%);
+}
+.dark .pill-button:hover {
+  background-color: hsl(224 25% 19%);
+}
+
+.pill-button-active {
+  background-color: #a14000 !important;
+  border-color: #a14000 !important;
+  color: #ffffff !important;
+}
+.pill-button-active:hover {
+  background-color: #873600 !important;
+}
+
+.badge-botanical {
+  background-color: #EAF7EE;
+  color: #1e6b47;
+  border-radius: 9999px;
+}
+.dark .badge-botanical {
+  background-color: rgba(30, 107, 71, 0.2);
+  color: #6ee7b7;
+}
+
+.badge-sale {
+  background-color: #F53D3D;
+  color: #ffffff;
+  border-radius: 9999px;
+}
+
+.badge-citrus {
+  background-color: #FFA114;
+  color: #ffffff;
+  border-radius: 9999px;
+}
+
