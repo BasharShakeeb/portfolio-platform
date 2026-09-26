@@ -42,16 +42,19 @@ export function Navbar() {
         scrolled ? 'bg-background/80 backdrop-blur-md border-b shadow-sm' : 'bg-transparent'
       )}
     >
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between" dir="rtl">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg" dir="ltr">
           <VisualIdentityImage field="portfolio_logo_path" className="h-8 w-8 rounded-lg object-contain"
             fallback={<span className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground text-sm">P</span>} />
           <span className="hidden sm:inline">Portfolio</span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-1 p-1 rounded-full bg-[#FAF7F2]/80 dark:bg-muted/40 border border-orange-100 dark:border-border shadow-2xs backdrop-blur-xs">
+        <div
+          dir={dir}
+          className="hidden md:flex items-center gap-1 p-1 rounded-full bg-[#FAF7F2]/80 dark:bg-muted/40 border border-orange-100 dark:border-border shadow-2xs backdrop-blur-xs"
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -115,7 +118,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-b bg-background">
+        <div className="md:hidden border-b bg-background" dir={dir}>
           <div className="container mx-auto px-4 py-3 space-y-1">
             {navLinks.map((link) => (
               <Link
