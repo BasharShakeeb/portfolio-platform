@@ -72,7 +72,7 @@ export function SettingsNavigation({ active, section, onSelect }: {
       </button>
       {/* Padding bridges the flyout gap; leaving it starts a short close delay. */}
       <div id="admin-settings-submenu" aria-hidden={!open}
-        className={cn('md:absolute md:top-0 md:z-[60] md:w-72 md:ltr:left-full md:rtl:right-full md:ltr:pl-2 md:rtl:pr-2 transition-[opacity,transform] duration-150 motion-reduce:transition-none',
+        className={cn('md:absolute md:top-0 md:z-[60] md:w-72 md:ltr:left-full md:rtl:right-full md:ltr:pl-1 md:rtl:pr-1 transition-[opacity,transform] duration-150 motion-reduce:transition-none',
           open ? 'visible mt-2 opacity-100 md:mt-0 translate-y-0' : 'invisible hidden pointer-events-none opacity-0 md:block md:translate-y-1')}>
         <div className="rounded-xl border border-primary/15 bg-background p-2 shadow-lg">
           <ul aria-label={t('admin.settings')} className="space-y-1">
