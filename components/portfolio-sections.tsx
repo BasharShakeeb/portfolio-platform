@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLanguage } from '@/contexts/app-context';
-import { supabase, type Item, type Profile, type Message, type ContactSettings } from '@/lib/supabase';
+import { supabase, type Item, type Profile, type Message, type ContactSettings, getOwnerUserId } from '@/lib/supabase';
 import { monthNames } from '@/lib/i18n';
 import { Search, Calendar, Tag, ExternalLink, ArrowRight, Send, Mail, MapPin, Phone, Github, Linkedin, Twitter, MessageCircle, Eye, Sparkles, Award, FolderGit2, GraduationCap, BookOpen, Layers } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -117,11 +117,17 @@ export function PortfolioSections() {
     if (!contactForm.name || !contactForm.email || !contactForm.message) return;
     setSending(true);
 
-    const { data: profileData } = await supabase.from('profiles').select('id').limit(1).maybeSingle();
+    try {
+      const targetUserId = await getOwnerUserId();
 
-    if (profileData) {
+      if (!targetUserId) {
+        toast.error(t('admin.error'));
+        setSending(false);
+        return;
+      }
+
       const { error } = await supabase.from('messages').insert({
-        user_id: profileData.id,
+        user_id: targetUserId,
         visitor_name: contactForm.name,
         visitor_email: contactForm.email,
         subject: contactForm.subject,
@@ -129,13 +135,21 @@ export function PortfolioSections() {
       });
 
       if (error) {
+        console.error('Failed to insert message:', error);
         toast.error(t('admin.error'));
       } else {
         toast.success(t('contact.sent'));
         setContactForm({ name: '', email: '', subject: '', message: '' });
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('messages-updated'));
+        }
       }
+    } catch (err) {
+      console.error('Error submitting contact form:', err);
+      toast.error(t('admin.error'));
+    } finally {
+      setSending(false);
     }
-    setSending(false);
   };
 
   const formatDate = (item: Item) => {

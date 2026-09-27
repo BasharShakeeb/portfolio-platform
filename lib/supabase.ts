@@ -89,3 +89,28 @@ export type ChatFAQ = {
   created_at: string;
   updated_at: string;
 };
+
+export async function getOwnerUserId(): Promise<string | null> {
+  try {
+    // 1. Check profiles table
+    const { data: profile } = await supabase.from('profiles').select('id').limit(1).maybeSingle();
+    if (profile?.id) return profile.id;
+
+    // 2. Check visual_identity_settings table
+    const { data: visual } = await supabase.from('visual_identity_settings').select('owner_user_id').limit(1).maybeSingle();
+    if (visual?.owner_user_id) return visual.owner_user_id;
+
+    // 3. Check items table
+    const { data: item } = await supabase.from('items').select('user_id').limit(1).maybeSingle();
+    if (item?.user_id) return item.user_id;
+
+    // 4. Check active auth session if logged in
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (sessionData?.session?.user?.id) return sessionData.session.user.id;
+  } catch (err) {
+    console.error('Error fetching owner user ID:', err);
+  }
+
+  return null;
+}
+

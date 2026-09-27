@@ -38,7 +38,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!session) return;
-    (async () => {
+    const fetchStats = async () => {
       const [itemsRes, messagesRes] = await Promise.all([
         supabase.from('items').select('*', { count: 'exact', head: true }),
         supabase.from('messages').select('*', { count: 'exact', head: true }),
@@ -49,7 +49,28 @@ export default function AdminDashboard() {
         messages: messagesRes.count || 0,
         unread: unreadRes.count || 0,
       });
-    })();
+    };
+
+    fetchStats();
+
+    const handleUpdate = () => { fetchStats(); };
+    window.addEventListener('messages-updated', handleUpdate);
+
+    const channel = supabase
+      .channel('admin-stats-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'messages' },
+        () => {
+          fetchStats();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      window.removeEventListener('messages-updated', handleUpdate);
+      supabase.removeChannel(channel);
+    };
   }, [session, tab]);
 
   const handleSignOut = async () => {

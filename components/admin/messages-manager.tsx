@@ -31,6 +31,25 @@ export function MessagesManager() {
 
   useEffect(() => {
     loadMessages();
+
+    const handleUpdate = () => { loadMessages(); };
+    window.addEventListener('messages-updated', handleUpdate);
+
+    const channel = supabase
+      .channel('messages-manager-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'messages' },
+        () => {
+          loadMessages();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      window.removeEventListener('messages-updated', handleUpdate);
+      supabase.removeChannel(channel);
+    };
   }, [loadMessages]);
 
   const openReply = (msg: Message) => {
@@ -38,7 +57,10 @@ export function MessagesManager() {
     setReplyText(msg.reply || '');
     setReplyOpen(true);
     if (msg.status === 'unread') {
-      supabase.from('messages').update({ status: 'read' }).eq('id', msg.id).then(() => loadMessages());
+      supabase.from('messages').update({ status: 'read' }).eq('id', msg.id).then(() => {
+        loadMessages();
+        if (typeof window !== 'undefined') window.dispatchEvent(new Event('messages-updated'));
+      });
     }
   };
 
@@ -54,6 +76,7 @@ export function MessagesManager() {
       toast.success(t('admin.saved'));
       setReplyOpen(false);
       loadMessages();
+      if (typeof window !== 'undefined') window.dispatchEvent(new Event('messages-updated'));
     }
   };
 
@@ -64,11 +87,13 @@ export function MessagesManager() {
     else {
       toast.success(t('admin.saved'));
       loadMessages();
+      if (typeof window !== 'undefined') window.dispatchEvent(new Event('messages-updated'));
     }
   };
 
   const filtered = filter === 'all' ? messages : messages.filter((m) => m.status === filter);
   const unreadCount = messages.filter((m) => m.status === 'unread').length;
+  const repliedCount = messages.filter((m) => m.status === 'replied').length;
 
   const statusIcon = (status: string) => {
     if (status === 'unread') return <Mail className="h-4 w-4 text-blue-500" />;
@@ -86,7 +111,7 @@ export function MessagesManager() {
           {t('admin.unread')} ({unreadCount})
         </Button>
         <Button variant={filter === 'replied' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('replied')}>
-          {t('admin.replied')}
+          {t('admin.replied')} ({repliedCount})
         </Button>
       </div>
 

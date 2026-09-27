@@ -60,44 +60,66 @@ function ProfileSection() {
         if (data) {
           setProfile(data as Profile);
           setSocialLinks((data as Profile).social_links || {});
+        } else if (session?.user) {
+          setProfile({
+            id: session.user.id,
+            site_name: 'My Portfolio',
+            bio: '',
+            avatar_url: '',
+            social_links: {},
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+          setSocialLinks({});
         }
       } catch (err) {
         console.error('Profile load exception:', err);
       }
       setLoading(false);
     })();
-  }, []);
+  }, [session?.user]);
 
   const handleSave = async () => {
-    if (!profile || !session?.user) return;
+    if (!session?.user) return;
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          site_name: profile.site_name,
-          bio: profile.bio,
-          avatar_url: profile.avatar_url,
-          social_links: socialLinks,
-        })
-        .eq('id', session.user.id);
+      const site_name = profile?.site_name || 'My Portfolio';
+      const bio = profile?.bio || '';
+      const avatar_url = profile?.avatar_url || '';
 
-      if (error) {
-        const { error: insertError } = await supabase.from('profiles').insert({
+      const { data: existing } = await supabase.from('profiles').select('id').eq('id', session.user.id).maybeSingle();
+
+      let saveError;
+      if (existing) {
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            site_name,
+            bio,
+            avatar_url,
+            social_links: socialLinks,
+          })
+          .eq('id', session.user.id);
+        saveError = error;
+      } else {
+        const { error } = await supabase.from('profiles').insert({
           id: session.user.id,
-          site_name: profile.site_name,
-          bio: profile.bio,
-          avatar_url: profile.avatar_url,
+          site_name,
+          bio,
+          avatar_url,
           social_links: socialLinks,
         });
-        if (insertError) {
-          console.error('Profile save error:', insertError.message);
-          toast.error(t('admin.error'));
-        } else {
-          toast.success(t('admin.saved'));
-        }
+        saveError = error;
+      }
+
+      if (saveError) {
+        console.error('Profile save error:', saveError.message);
+        toast.error(t('admin.error'));
       } else {
         toast.success(t('admin.saved'));
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('portfolio-profile-updated'));
+        }
       }
     } catch (err) {
       console.error('Profile save exception:', err);

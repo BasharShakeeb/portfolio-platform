@@ -5,7 +5,7 @@ import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/contexts/app-context';
-import { supabase } from '@/lib/supabase';
+import { supabase, getOwnerUserId } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
 type ChatMessage = {
@@ -56,15 +56,18 @@ export function ChatWidget() {
 
     // If it looks like a contact message, save to DB
     if (userMsg.length > 20 && userMsg.includes('@')) {
-      const { data: profileData } = await supabase.from('profiles').select('id').limit(1).maybeSingle();
-      if (profileData) {
+      const targetUserId = await getOwnerUserId();
+      if (targetUserId) {
         await supabase.from('messages').insert({
-          user_id: profileData.id,
+          user_id: targetUserId,
           visitor_name: 'Chat Widget',
           visitor_email: userMsg,
           subject: 'Chat message',
           body: userMsg,
         });
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('messages-updated'));
+        }
       }
     }
 
