@@ -96,14 +96,14 @@ export function MessagesManager() {
   const repliedCount = messages.filter((m) => m.status === 'replied').length;
 
   const statusIcon = (status: string) => {
-    if (status === 'unread') return <Mail className="h-4 w-4 text-blue-500" />;
-    if (status === 'read') return <MailOpen className="h-4 w-4 text-amber-500" />;
-    return <Check className="h-4 w-4 text-green-500" />;
+    if (status === 'unread') return <Mail className="h-5 w-5 text-[#38BDF8] shrink-0 stroke-[1.8]" />;
+    if (status === 'read') return <MailOpen className="h-5 w-5 text-[#A7ADB4] shrink-0 stroke-[1.8]" />;
+    return <Check className="h-5 w-5 text-[#10B981] shrink-0 stroke-[1.8]" />;
   };
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2.5 flex-wrap">
         <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>
           {t('section.all')} ({messages.length})
         </Button>
@@ -116,45 +116,57 @@ export function MessagesManager() {
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground">{t('common.loading')}</p>
+        <p className="text-[#A7ADB4] py-8 text-center text-sm">{t('common.loading')}</p>
       ) : filtered.length === 0 ? (
-        <p className="text-muted-foreground text-center py-10">{t('common.noData')}</p>
+        <div className="rounded-2xl border border-[#343A40] bg-[#191C1F] p-12 text-center">
+          <Mail className="h-10 w-10 text-[#737A82] mx-auto mb-3 stroke-[1.5]" />
+          <p className="text-[#A7ADB4] text-sm font-medium">{t('common.noData')}</p>
+        </div>
       ) : (
         <div className="space-y-3">
           {filtered.map((msg) => (
-            <Card key={msg.id} className={cn(msg.status === 'unread' && 'border-primary/30 bg-primary/5')}>
-              <CardContent className="pt-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3 flex-1 min-w-0">
-                    {statusIcon(msg.status)}
+            <Card key={msg.id} className={cn('rounded-2xl border border-[#343A40] bg-[#191C1F] text-[#F5F7F8] shadow-sm transition-all', msg.status === 'unread' ? 'border-[#10B981]/40 bg-[#10B981]/5' : 'hover:border-[#343A40]/80')}>
+              <CardContent className="pt-5 pb-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-3.5 flex-1 min-w-0">
+                    <div className="mt-0.5 p-2 rounded-xl bg-[#202428] border border-[#343A40]">
+                      {statusIcon(msg.status)}
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <span className="font-semibold">{msg.visitor_name}</span>
-                        <span className="text-sm text-muted-foreground">{msg.visitor_email}</span>
-                        <Badge variant={msg.status === 'unread' ? 'default' : 'secondary'} className="text-xs">
+                      <div className="flex items-center gap-2.5 flex-wrap mb-1.5">
+                        <span className="font-semibold text-[#F5F7F8]">{msg.visitor_name}</span>
+                        <span className="text-xs text-[#A7ADB4]">{msg.visitor_email}</span>
+                        <Badge
+                          variant={msg.status === 'unread' ? 'default' : 'secondary'}
+                          className={cn('text-xs rounded-lg px-2 py-0.5 font-medium',
+                            msg.status === 'unread' ? 'bg-[#38BDF8]/15 text-[#38BDF8] border border-[#38BDF8]/30' :
+                            msg.status === 'replied' ? 'bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30' :
+                            'bg-[#202428] text-[#A7ADB4] border border-[#343A40]'
+                          )}
+                        >
                           {t(`admin.${msg.status}` as any)}
                         </Badge>
                       </div>
-                      {msg.subject && <p className="text-sm font-medium mb-1">{msg.subject}</p>}
-                      <p className="text-sm text-muted-foreground line-clamp-2">{msg.body}</p>
+                      {msg.subject && <p className="text-sm font-medium text-[#F5F7F8] mb-1">{msg.subject}</p>}
+                      <p className="text-sm text-[#A7ADB4] line-clamp-2 leading-relaxed">{msg.body}</p>
                       {msg.reply && (
-                        <div className="mt-2 p-2 rounded-md bg-muted text-sm">
-                          <span className="font-medium text-xs">{t('admin.reply')}: </span>
-                          {msg.reply}
+                        <div className="mt-3 p-3 rounded-xl bg-[#202428] border border-[#343A40] text-sm text-[#F5F7F8]">
+                          <span className="font-semibold text-xs text-[#10B981]">{t('admin.reply')}: </span>
+                          <span className="text-xs text-[#A7ADB4]">{msg.reply}</span>
                         </div>
                       )}
-                      <p className="text-xs text-muted-foreground mt-2">
+                      <p className="text-xs text-[#737A82] mt-2.5">
                         {new Date(msg.created_at).toLocaleString()}
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-1.5">
-                    <Button variant="outline" size="sm" onClick={() => openReply(msg)}>
-                      <Reply className="h-3.5 w-3.5 mr-1" />
+                  <div className="flex flex-col gap-2">
+                    <Button variant="outline" size="sm" onClick={() => openReply(msg)} className="h-8 px-2.5 text-xs">
+                      <Reply className="h-3.5 w-3.5 mr-1 stroke-[1.8]" />
                       {t('admin.reply')}
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleDelete(msg.id)}>
-                      <Trash2 className="h-3.5 w-3.5" />
+                    <Button variant="outline" size="sm" onClick={() => handleDelete(msg.id)} className="h-8 px-2.5 text-xs hover:border-[#EF4444]/40 hover:text-[#EF4444]">
+                      <Trash2 className="h-3.5 w-3.5 stroke-[1.8]" />
                     </Button>
                   </div>
                 </div>
@@ -167,27 +179,27 @@ export function MessagesManager() {
       <Dialog open={replyOpen} onOpenChange={setReplyOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t('admin.reply')}</DialogTitle>
+            <DialogTitle className="text-lg font-bold text-[#F5F7F8]">{t('admin.reply')}</DialogTitle>
           </DialogHeader>
           {replyMsg && (
-            <div className="space-y-3">
-              <div className="p-3 rounded-md bg-muted text-sm">
-                <p className="font-medium">{replyMsg.visitor_name} ({replyMsg.visitor_email})</p>
-                {replyMsg.subject && <p className="font-medium mt-1">{replyMsg.subject}</p>}
-                <p className="mt-1 text-muted-foreground">{replyMsg.body}</p>
+            <div className="space-y-3.5">
+              <div className="p-3.5 rounded-xl bg-[#202428] border border-[#343A40] text-sm">
+                <p className="font-medium text-[#F5F7F8]">{replyMsg.visitor_name} ({replyMsg.visitor_email})</p>
+                {replyMsg.subject && <p className="font-medium text-xs text-[#A7ADB4] mt-1">{replyMsg.subject}</p>}
+                <p className="mt-2 text-xs text-[#A7ADB4] leading-relaxed">{replyMsg.body}</p>
               </div>
               <div>
-                <label className="text-sm font-medium mb-1.5 block">{t('admin.reply')}</label>
-                <Textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} rows={4} />
+                <label className="text-sm font-medium text-[#F5F7F8] mb-1.5 block">{t('admin.reply')}</label>
+                <Textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} rows={4} placeholder="Type your reply..." />
               </div>
             </div>
           )}
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setReplyOpen(false)}>
               {t('admin.cancel')}
             </Button>
-            <Button onClick={handleReply}>
-              <Send className="h-4 w-4 mr-2" />
+            <Button onClick={handleReply} className="bg-[#10B981] hover:bg-[#22C55E] text-white">
+              <Send className="h-4 w-4 mr-2 stroke-[1.8]" />
               {t('admin.reply')}
             </Button>
           </DialogFooter>

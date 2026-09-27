@@ -63,27 +63,27 @@ export function SettingsNavigation({ active, section, onSelect }: {
             requestAnimationFrame(() => root.current?.querySelector<HTMLButtonElement>('[data-settings-item]')?.focus());
           }
         }}
-        className={cn('flex w-full items-center gap-2 rounded-lg px-3 py-2 text-start text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-          active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent')}>
-        <Settings className="h-4 w-4 shrink-0" aria-hidden="true" />
+        className={cn('flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-start text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#10B981]',
+          active ? 'bg-[#10B981] text-white shadow-sm font-semibold' : 'text-[#A7ADB4] hover:text-[#F5F7F8] hover:bg-[#25292D]')}>
+        <Settings className="h-5 w-5 shrink-0 stroke-[1.8]" aria-hidden="true" />
         <span className="flex-1">{t('admin.settings')}</span>
-        <ChevronRight className="hidden h-4 w-4 md:block rtl:rotate-180" aria-hidden="true" />
-        <ChevronDown className={cn('h-4 w-4 md:hidden transition-transform motion-reduce:transition-none', open && 'rotate-180')} aria-hidden="true" />
+        <ChevronRight className="hidden h-4 w-4 md:block rtl:rotate-180 opacity-70" aria-hidden="true" />
+        <ChevronDown className={cn('h-4 w-4 md:hidden transition-transform motion-reduce:transition-none opacity-70', open && 'rotate-180')} aria-hidden="true" />
       </button>
       {/* Padding bridges the flyout gap; leaving it starts a short close delay. */}
       <div id="admin-settings-submenu" aria-hidden={!open}
         className={cn('md:absolute md:top-0 md:z-[60] md:w-72 md:ltr:left-full md:rtl:right-full md:ltr:pl-1 md:rtl:pr-1 transition-[opacity,transform] duration-150 motion-reduce:transition-none',
           open ? 'visible mt-2 opacity-100 md:mt-0 translate-y-0' : 'invisible hidden pointer-events-none opacity-0 md:block md:translate-y-1')}>
-        <div className="rounded-xl border border-primary/15 bg-background p-2 shadow-lg">
+        <div className="rounded-2xl border border-[#343A40] bg-[#25292D] p-2 shadow-2xl">
           <ul aria-label={t('admin.settings')} className="space-y-1">
             {sections.map((item) => (
               <li key={item.id}>
                 <button type="button" data-settings-item tabIndex={open ? 0 : -1}
                   aria-current={active && section === item.id ? 'page' : undefined}
                   onClick={() => { onSelect(item.id); trigger.current?.focus(); close(); }}
-                  className={cn('flex w-full items-center gap-3 rounded-lg px-3 py-3 text-start text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                    active && section === item.id ? 'bg-primary/10 text-primary font-semibold' : 'text-muted-foreground hover:bg-accent hover:text-foreground')}>
-                  <item.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  className={cn('flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-start text-sm transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#10B981]',
+                    active && section === item.id ? 'bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-semibold' : 'text-[#A7ADB4] hover:bg-[#2B3035] hover:text-[#F5F7F8]')}>
+                  <item.icon className="h-4 w-4 shrink-0 stroke-[1.8]" aria-hidden="true" />
                   <span>{item[lang]}</span>
                 </button>
               </li>

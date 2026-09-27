@@ -136,45 +136,47 @@ export function ItemsManager() {
             );
           })}
         </div>
-        <Button onClick={openCreate} size="sm">
-          <Plus className="h-4 w-4 mr-2" />
+        <Button onClick={openCreate} size="sm" className="bg-[#10B981] hover:bg-[#22C55E] text-white">
+          <Plus className="h-4 w-4 mr-2 stroke-[1.8]" />
           {t('admin.create')}
         </Button>
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground">{t('common.loading')}</p>
+        <p className="text-[#A7ADB4] text-center py-8 text-sm">{t('common.loading')}</p>
       ) : filtered.length === 0 ? (
-        <p className="text-muted-foreground text-center py-10">{t('common.noData')}</p>
+        <div className="rounded-2xl border border-[#343A40] bg-[#191C1F] p-12 text-center">
+          <p className="text-[#A7ADB4] text-sm font-medium">{t('common.noData')}</p>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((item) => (
-            <Card key={item.id} className="overflow-hidden">
+            <Card key={item.id} className="overflow-hidden rounded-2xl border border-[#343A40] bg-[#191C1F] text-[#F5F7F8] shadow-sm hover:border-[#10B981]/40 transition-all">
               {item.image_url && (
-                <div className="aspect-video overflow-hidden bg-muted">
+                <div className="aspect-video overflow-hidden bg-[#202428] border-b border-[#343A40]">
                   <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
                 </div>
               )}
-              <CardContent className="pt-4">
-                <Badge variant="outline" className="mb-2 text-xs">
+              <CardContent className="pt-4 pb-4">
+                <Badge className="mb-2 text-xs rounded-lg bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-medium">
                   {t(`section.${item.category}` as any) || item.category}
                 </Badge>
-                <h3 className="font-semibold mb-1">{item.title}</h3>
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{item.description}</p>
+                <h3 className="font-semibold text-[#F5F7F8] mb-1 line-clamp-1">{item.title}</h3>
+                <p className="text-sm text-[#A7ADB4] line-clamp-2 mb-3 leading-relaxed">{item.description}</p>
                 {item.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-3">
+                  <div className="flex flex-wrap gap-1.5 mb-3.5">
                     {item.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
+                      <Badge key={tag} className="text-xs rounded-md bg-[#202428] border border-[#343A40] text-[#A7ADB4] font-normal">{tag}</Badge>
                     ))}
                   </div>
                 )}
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => openEdit(item)}>
-                    <Pencil className="h-3.5 w-3.5 mr-1" />
+                <div className="flex gap-2 pt-2 border-t border-[#343A40]/60">
+                  <Button variant="outline" size="sm" onClick={() => openEdit(item)} className="h-8 px-2.5 text-xs">
+                    <Pencil className="h-3.5 w-3.5 mr-1 stroke-[1.8]" />
                     {t('admin.edit')}
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleDelete(item.id)}>
-                    <Trash2 className="h-3.5 w-3.5 mr-1" />
+                  <Button variant="outline" size="sm" onClick={() => handleDelete(item.id)} className="h-8 px-2.5 text-xs hover:border-[#EF4444]/40 hover:text-[#EF4444]">
+                    <Trash2 className="h-3.5 w-3.5 mr-1 stroke-[1.8]" />
                     {t('admin.delete')}
                   </Button>
                 </div>

@@ -65,39 +65,39 @@
     const BackArrow = dir === 'rtl' ? ArrowRight : ArrowLeft;
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/10 p-4" dir={dir}>
-        <Card className="w-full max-w-md shadow-lg border-border/60">
-          <CardHeader className="text-center space-y-3">
-            <div className="h-14 w-14 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center">
-              <ShieldCheck className="h-7 w-7" />
+      <div className="min-h-screen flex items-center justify-center bg-[#111315] p-4 text-[#F5F7F8]" dir={dir}>
+        <Card className="w-full max-w-md border border-[#343A40] bg-[#191C1F] text-[#F5F7F8] rounded-2xl shadow-2xl">
+          <CardHeader className="text-center space-y-3 pt-8">
+            <div className="h-14 w-14 rounded-2xl bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 mx-auto flex items-center justify-center">
+              <ShieldCheck className="h-7 w-7 stroke-[1.8]" />
             </div>
             <div>
-              <CardTitle className="text-2xl font-bold">{t('auth.forgotPasswordTitle')}</CardTitle>
-              <CardDescription className="mt-1.5 text-sm">
+              <CardTitle className="text-2xl font-bold text-[#F5F7F8]">{t('auth.forgotPasswordTitle')}</CardTitle>
+              <CardDescription className="mt-1.5 text-sm text-[#A7ADB4]">
                 {t('auth.forgotPasswordDesc')}
               </CardDescription>
             </div>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="pb-8">
             {submitted ? (
               <div className="space-y-5 text-center py-2">
-                <div className="h-12 w-12 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 mx-auto flex items-center justify-center">
-                  <CheckCircle2 className="h-6 w-6" />
+                <div className="h-12 w-12 rounded-full bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 mx-auto flex items-center justify-center">
+                  <CheckCircle2 className="h-6 w-6 stroke-[1.8]" />
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-[#A7ADB4] leading-relaxed">
                     {t('auth.forgotPasswordSuccess')}
                   </p>
                 </div>
                 <div className="pt-2 flex flex-col gap-2">
                   <Button variant="outline" asChild className="w-full">
-                    <Link href="/admin/login" className="flex items-center justify-center gap-2">
+                    <Link href="/admin/login" className="flex items-center justify-center gap-2 text-[#F5F7F8]">
                       <BackArrow className="h-4 w-4" />
                       {t('auth.backToLogin')}
                     </Link>
                   </Button>
-                  <Button variant="ghost" asChild className="w-full text-xs text-muted-foreground">
+                  <Button variant="ghost" asChild className="w-full text-xs text-[#737A82] hover:text-[#F5F7F8]">
                     <Link href="/">
                       {t('auth.backToHome')}
                     </Link>
@@ -107,11 +107,11 @@
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label htmlFor="email" className="text-sm font-medium block">
+                  <label htmlFor="email" className="text-sm font-medium text-[#F5F7F8] block">
                     {t('admin.email')}
                   </label>
                   <div className="relative">
-                    <Mail className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-muted-foreground" />
+                    <Mail className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-[#737A82] stroke-[1.8]" />
                     <Input
                       id="email"
                       type="email"
@@ -131,13 +131,13 @@
                 </div>
 
                 {errorMessage && (
-                  <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 rounded-md p-3">
+                  <div className="flex items-center gap-2 text-sm text-[#EF4444] bg-[#EF4444]/10 border border-[#EF4444]/30 rounded-xl p-3">
                     <AlertCircle className="h-4 w-4 flex-shrink-0" />
                     <span>{errorMessage}</span>
                   </div>
                 )}
 
-                <Button type="submit" disabled={loading || !email.trim()} className="w-full gap-2">
+                <Button type="submit" disabled={loading || !email.trim()} className="w-full gap-2 bg-[#10B981] hover:bg-[#22C55E] text-white shadow-sm font-semibold h-11 rounded-xl">
                   <Mail className="h-4 w-4" />
                   {loading ? t('common.loading') : t('auth.sendResetLink')}
                 </Button>
@@ -145,7 +145,7 @@
                 <div className="text-center pt-2">
                   <Link
                     href="/admin/login"
-                    className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+                    className="inline-flex items-center gap-1.5 text-sm text-[#10B981] hover:underline"
                   >
                     <BackArrow className="h-3.5 w-3.5" />
                     {t('auth.backToLogin')}

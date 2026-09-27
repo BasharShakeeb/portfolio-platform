@@ -60,7 +60,7 @@ type ColorContextType = {
 const ColorContext = createContext<ColorContextType | undefined>(undefined);
 
 export function ColorProvider({ children }: { children: React.ReactNode }) {
-  const [hue, setHueState] = useState<number>(24);
+  const [hue, setHueState] = useState<number>(160);
 
   useEffect(() => {
     const saved = localStorage.getItem('portfolio-hue');
@@ -74,7 +74,7 @@ export function ColorProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const resetColor = useCallback(() => {
-    setHue(24);
+    setHue(160);
   }, [setHue]);
 
   useEffect(() => {
@@ -90,21 +90,20 @@ export function ColorProvider({ children }: { children: React.ReactNode }) {
 
 function applyHue(h: number) {
   const root = document.documentElement;
-  const isDark = root.classList.contains('dark');
-  if (h === 24) {
-    // Exact Brand Terracotta from system-des.md
-    root.style.setProperty('--primary', isDark ? '24 95% 45%' : '24 100% 31.6%');
+  if (h === 160 || h === 24) {
+    // Premium Emerald Green Accent (#10B981)
+    root.style.setProperty('--primary', '160 84% 39%');
     root.style.setProperty('--primary-foreground', '0 0% 100%');
-    root.style.setProperty('--ring', isDark ? '24 95% 45%' : '24 100% 31.6%');
-    root.style.setProperty('--accent', isDark ? '224 20% 18%' : '38 43% 96.5%');
-    root.style.setProperty('--accent-foreground', isDark ? '24 95% 45%' : '24 100% 31.6%');
-    root.style.setProperty('--chart-1', isDark ? '24 95% 45%' : '24 100% 31.6%');
+    root.style.setProperty('--ring', '160 84% 39%');
+    root.style.setProperty('--accent', '210 11% 19%');
+    root.style.setProperty('--accent-foreground', '160 84% 39%');
+    root.style.setProperty('--chart-1', '160 84% 39%');
   } else {
     root.style.setProperty('--primary', `${h} 70% 50%`);
-    root.style.setProperty('--primary-foreground', `${h} 70% 98%`);
+    root.style.setProperty('--primary-foreground', '0 0% 100%');
     root.style.setProperty('--ring', `${h} 70% 50%`);
-    root.style.setProperty('--accent', `${h} 60% 90%`);
-    root.style.setProperty('--accent-foreground', `${h} 70% 30%`);
+    root.style.setProperty('--accent', '210 11% 19%');
+    root.style.setProperty('--accent-foreground', `${h} 70% 50%`);
     root.style.setProperty('--chart-1', `${h} 70% 50%`);
   }
   root.style.setProperty('--chart-2', `${(h + 120) % 360} 60% 45%`);

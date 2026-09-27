@@ -137,28 +137,29 @@ export default function ResetPasswordPage() {
   }
 
   // 2. Invalid or Expired Token State
+  // 2. Invalid or Expired Session
   if (hasValidSession === false) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/10 p-4" dir={dir}>
-        <Card className="w-full max-w-md shadow-lg border-border/60">
-          <CardHeader className="text-center space-y-3">
-            <div className="h-14 w-14 rounded-2xl bg-destructive/10 text-destructive mx-auto flex items-center justify-center">
-              <AlertCircle className="h-7 w-7" />
+      <div className="min-h-screen flex items-center justify-center bg-[#111315] p-4 text-[#F5F7F8]" dir={dir}>
+        <Card className="w-full max-w-md border border-[#343A40] bg-[#191C1F] text-[#F5F7F8] rounded-2xl shadow-2xl">
+          <CardHeader className="text-center space-y-3 pt-8">
+            <div className="h-14 w-14 rounded-2xl bg-[#EF4444]/15 text-[#EF4444] border border-[#EF4444]/30 mx-auto flex items-center justify-center">
+              <AlertCircle className="h-7 w-7 stroke-[1.8]" />
             </div>
             <div>
-              <CardTitle className="text-2xl font-bold">{t('auth.resetPasswordTitle')}</CardTitle>
-              <CardDescription className="mt-1.5 text-sm">
+              <CardTitle className="text-2xl font-bold text-[#F5F7F8]">{t('auth.resetPasswordTitle')}</CardTitle>
+              <CardDescription className="mt-1.5 text-sm text-[#A7ADB4]">
                 {t('auth.invalidSession')}
               </CardDescription>
             </div>
           </CardHeader>
-          <CardContent className="space-y-3 pt-2">
-            <Button asChild className="w-full gap-2">
+          <CardContent className="space-y-3 pb-8">
+            <Button asChild className="w-full gap-2 bg-[#10B981] hover:bg-[#22C55E] text-white shadow-sm font-semibold h-11 rounded-xl">
               <Link href="/forgot-password">
                 {t('auth.sendResetLink')}
               </Link>
             </Button>
-            <Button variant="outline" asChild className="w-full gap-2">
+            <Button variant="outline" asChild className="w-full gap-2 border-[#343A40] bg-[#202428] text-[#F5F7F8] hover:bg-[#25292D] rounded-xl h-11">
               <Link href="/admin/login">
                 <BackArrow className="h-4 w-4" />
                 {t('auth.backToLogin')}
@@ -173,21 +174,21 @@ export default function ResetPasswordPage() {
   // 3. Success State
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/10 p-4" dir={dir}>
-        <Card className="w-full max-w-md shadow-lg border-border/60">
-          <CardHeader className="text-center space-y-3">
-            <div className="h-14 w-14 rounded-2xl bg-green-500/10 text-green-600 dark:text-green-400 mx-auto flex items-center justify-center">
-              <CheckCircle2 className="h-7 w-7" />
+      <div className="min-h-screen flex items-center justify-center bg-[#111315] p-4 text-[#F5F7F8]" dir={dir}>
+        <Card className="w-full max-w-md border border-[#343A40] bg-[#191C1F] text-[#F5F7F8] rounded-2xl shadow-2xl">
+          <CardHeader className="text-center space-y-3 pt-8">
+            <div className="h-14 w-14 rounded-2xl bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 mx-auto flex items-center justify-center">
+              <CheckCircle2 className="h-7 w-7 stroke-[1.8]" />
             </div>
             <div>
-              <CardTitle className="text-2xl font-bold">{t('auth.passwordResetSuccess')}</CardTitle>
-              <CardDescription className="mt-1.5 text-sm">
+              <CardTitle className="text-2xl font-bold text-[#F5F7F8]">{t('auth.passwordResetSuccess')}</CardTitle>
+              <CardDescription className="mt-1.5 text-sm text-[#A7ADB4]">
                 {t('admin.passwordChanged')}
               </CardDescription>
             </div>
           </CardHeader>
-          <CardContent className="pt-2">
-            <Button asChild className="w-full gap-2">
+          <CardContent className="pb-8">
+            <Button asChild className="w-full gap-2 bg-[#10B981] hover:bg-[#22C55E] text-white shadow-sm font-semibold h-11 rounded-xl">
               <Link href="/admin/login">
                 <BackArrow className="h-4 w-4" />
                 {t('auth.backToLogin')}
@@ -201,27 +202,27 @@ export default function ResetPasswordPage() {
 
   // 4. Reset Password Form
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/10 p-4" dir={dir}>
-      <Card className="w-full max-w-md shadow-lg border-border/60">
-        <CardHeader className="text-center space-y-3">
-          <div className="h-14 w-14 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center">
-            <KeyRound className="h-7 w-7" />
+    <div className="min-h-screen flex items-center justify-center bg-[#111315] p-4 text-[#F5F7F8]" dir={dir}>
+      <Card className="w-full max-w-md border border-[#343A40] bg-[#191C1F] text-[#F5F7F8] rounded-2xl shadow-2xl">
+        <CardHeader className="text-center space-y-3 pt-8">
+          <div className="h-14 w-14 rounded-2xl bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 mx-auto flex items-center justify-center">
+            <KeyRound className="h-7 w-7 stroke-[1.8]" />
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold">{t('auth.resetPasswordTitle')}</CardTitle>
-            <CardDescription className="mt-1.5 text-sm">
+            <CardTitle className="text-2xl font-bold text-[#F5F7F8]">{t('auth.resetPasswordTitle')}</CardTitle>
+            <CardDescription className="mt-1.5 text-sm text-[#A7ADB4]">
               {t('auth.resetPasswordDesc')}
             </CardDescription>
           </div>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="pb-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* New Password */}
             <div className="space-y-1.5">
-              <Label htmlFor="newPassword">{t('auth.newPassword')}</Label>
+              <Label htmlFor="newPassword" className="text-sm font-medium text-[#F5F7F8]">{t('auth.newPassword')}</Label>
               <div className="relative">
-                <Lock className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-[#737A82] stroke-[1.8]" />
                 <Input
                   id="newPassword"
                   type={showPassword ? 'text' : 'password'}
@@ -241,19 +242,19 @@ export default function ResetPasswordPage() {
                   type="button"
                   tabIndex={-1}
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-1/2 -translate-y-1/2 ltr:right-3 rtl:left-3 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute top-1/2 -translate-y-1/2 ltr:right-3 rtl:left-3 text-[#737A82] hover:text-[#F5F7F8] transition-colors p-1"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? <EyeOff className="h-4 w-4 stroke-[1.8]" /> : <Eye className="h-4 w-4 stroke-[1.8]" />}
                 </button>
               </div>
-              <p className="text-xs text-muted-foreground">{t('auth.passwordLengthError')}</p>
+              <p className="text-xs text-[#737A82]">{t('auth.passwordLengthError')}</p>
             </div>
 
             {/* Confirm Password */}
             <div className="space-y-1.5">
-              <Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Label>
+              <Label htmlFor="confirmPassword" className="text-sm font-medium text-[#F5F7F8]">{t('auth.confirmPassword')}</Label>
               <div className="relative">
-                <Lock className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-[#737A82] stroke-[1.8]" />
                 <Input
                   id="confirmPassword"
                   type={showConfirm ? 'text' : 'password'}
@@ -272,15 +273,15 @@ export default function ResetPasswordPage() {
                   type="button"
                   tabIndex={-1}
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute top-1/2 -translate-y-1/2 ltr:right-3 rtl:left-3 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute top-1/2 -translate-y-1/2 ltr:right-3 rtl:left-3 text-[#737A82] hover:text-[#F5F7F8] transition-colors p-1"
                 >
-                  {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showConfirm ? <EyeOff className="h-4 w-4 stroke-[1.8]" /> : <Eye className="h-4 w-4 stroke-[1.8]" />}
                 </button>
               </div>
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 rounded-md p-3">
+              <div className="flex items-center gap-2 text-sm text-[#EF4444] bg-[#EF4444]/10 border border-[#EF4444]/30 rounded-xl p-3">
                 <AlertCircle className="h-4 w-4 flex-shrink-0" />
                 <span>{error}</span>
               </div>
@@ -289,16 +290,16 @@ export default function ResetPasswordPage() {
             <Button
               type="submit"
               disabled={submitting || !newPassword || !confirmPassword}
-              className="w-full gap-2"
+              className="w-full gap-2 bg-[#10B981] hover:bg-[#22C55E] text-white shadow-sm font-semibold h-11 rounded-xl"
             >
-              <Shield className="h-4 w-4" />
+              <Shield className="h-4 w-4 stroke-[1.8]" />
               {submitting ? t('common.loading') : t('auth.changePasswordBtn')}
             </Button>
 
             <div className="text-center pt-2">
               <Link
                 href="/admin/login"
-                className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+                className="inline-flex items-center gap-1.5 text-sm text-[#10B981] hover:underline"
               >
                 <BackArrow className="h-3.5 w-3.5" />
                 {t('auth.backToLogin')}
