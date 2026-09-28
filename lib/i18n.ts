@@ -12,7 +12,6 @@ export type TranslationKey =
   | 'chat.projectsResponse' | 'chat.defaultResponse'
   | 'theme.toggle' | 'theme.light' | 'theme.dark'
   | 'color.title' | 'color.reset'
-  | 'matrix.activate' | 'matrix.deactivate'
   | 'cv.title' | 'cv.download'
   | 'admin.login' | 'admin.email' | 'admin.password' | 'admin.dashboard'
   | 'admin.items' | 'admin.messages' | 'admin.settings' | 'admin.backup'
@@ -103,8 +102,6 @@ const en: Record<TranslationKey, string> = {
   'theme.dark': 'Dark',
   'color.title': 'Theme Color',
   'color.reset': 'Reset',
-  'matrix.activate': 'Activate Matrix',
-  'matrix.deactivate': 'Deactivate Matrix',
   'cv.title': 'Curriculum Vitae',
   'cv.download': 'Download / Print CV',
   'admin.login': 'Admin Login',
@@ -327,8 +324,6 @@ const ar: Record<TranslationKey, string> = {
   'theme.dark': 'داكن',
   'color.title': 'لون المظهر',
   'color.reset': 'إعادة تعيين',
-  'matrix.activate': 'تفعيل المطر الكودي',
-  'matrix.deactivate': 'إيقاف المطر الكودي',
   'cv.title': 'السيرة الذاتية',
   'cv.download': 'تحميل / طباعة السيرة الذاتية',
   'admin.login': 'دخول المدير',

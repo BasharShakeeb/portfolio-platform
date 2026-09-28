@@ -1,18 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLanguage } from '@/contexts/app-context';
 import { Navbar } from '@/components/navbar';
 import { PortfolioSections } from '@/components/portfolio-sections';
 import { ChatWidget } from '@/components/chat-widget';
-import { MatrixRain } from '@/components/matrix-rain';
-import { Terminal } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { VisualIdentityImage } from '@/components/visual-identity-image';
 
 export default function Home() {
   const { t, dir, lang } = useLanguage();
-  const [matrixActive, setMatrixActive] = useState(false);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -24,20 +20,6 @@ export default function Home() {
       <Navbar />
       <PortfolioSections />
       <ChatWidget />
-      <MatrixRain active={matrixActive} />
-
-      {/* Matrix toggle button - appears in the inspector area */}
-      <div className="fixed bottom-6 ltr:left-6 rtl:right-6 z-50">
-        <Button
-          variant={matrixActive ? 'brand' : 'pill'}
-          size="pill"
-          onClick={() => setMatrixActive(!matrixActive)}
-          className="shadow-lg border border-white/65 dark:border-border font-medium"
-        >
-          <Terminal className="h-3.5 w-3.5 mr-2 stroke-[1.8]" />
-          {matrixActive ? t('matrix.deactivate') : t('matrix.activate')}
-        </Button>
-      </div>
 
       {/* Footer */}
       <footer className="border-t border-white/40 dark:border-border py-8">

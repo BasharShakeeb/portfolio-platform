@@ -227,7 +227,6 @@ pnpm dev      # أو pnpm start للتجربة على build
 │   ├── chat-widget.tsx
 │   ├── cv-export.tsx
 │   ├── error-boundary.tsx
-│   ├── matrix-rain.tsx
 │   ├── navbar.tsx
 │   ├── portfolio-sections.tsx
 │   ├── visual-identity-icons.tsx
