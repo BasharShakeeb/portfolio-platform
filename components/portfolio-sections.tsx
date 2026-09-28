@@ -317,7 +317,7 @@ export function PortfolioSections() {
       <section className="sticky top-16 z-40 bg-[rgba(170,221,252,0.40)] dark:bg-background/80 backdrop-blur-md border-b border-white/55 dark:border-border py-4">
         <div className="container mx-auto px-4 space-y-3">
           <div className="flex flex-col md:flex-row gap-3">
-            <div className="relative flex-1">
+            <div className="relative flex-1 min-w-0">
               <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-[#2477A8] dark:text-muted-foreground stroke-[1.8]" />
               <Input
                 value={search}
@@ -326,9 +326,9 @@ export function PortfolioSections() {
                 className="ltr:pl-10 rtl:pr-10"
               />
             </div>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap min-w-0">
               <Select value={sortBy} onValueChange={(v) => setSortBy(v as any)}>
-                <SelectTrigger className="w-[130px]">
+                <SelectTrigger className="w-[120px] sm:w-[130px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -338,7 +338,7 @@ export function PortfolioSections() {
                 </SelectContent>
               </Select>
               <Select value={yearFilter} onValueChange={setYearFilter}>
-                <SelectTrigger className="w-[100px]">
+                <SelectTrigger className="w-[90px] sm:w-[100px]">
                   <SelectValue placeholder={t('filter.year')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -349,7 +349,7 @@ export function PortfolioSections() {
                 </SelectContent>
               </Select>
               <Select value={monthFilter} onValueChange={setMonthFilter}>
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-[110px] sm:w-[120px]">
                   <SelectValue placeholder={t('filter.month')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -360,7 +360,7 @@ export function PortfolioSections() {
                 </SelectContent>
               </Select>
               <Select value={dayFilter} onValueChange={setDayFilter}>
-                <SelectTrigger className="w-[80px]">
+                <SelectTrigger className="w-[75px] sm:w-[80px]">
                   <SelectValue placeholder={t('filter.day')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -377,7 +377,8 @@ export function PortfolioSections() {
           </div>
 
           {/* Category tabs */}
-          <div className="flex gap-2 flex-wrap items-center p-1.5 rounded-full bg-white/35 dark:bg-muted/40 border border-white/60 dark:border-border w-fit shadow-[0_8px_30px_rgba(36,119,168,0.08)] backdrop-blur-md">
+          <div className="overflow-x-auto pb-1 -mb-1">
+            <div className="flex gap-2 items-center p-1.5 rounded-full bg-white/35 dark:bg-muted/40 border border-white/60 dark:border-border w-fit min-w-max shadow-[0_8px_30px_rgba(36,119,168,0.08)] backdrop-blur-md">
             <Button
               variant={activeCategory === 'all' ? 'pillActive' : 'pill'}
               size="pill"
@@ -415,6 +416,7 @@ export function PortfolioSections() {
                 </Button>
               );
             })}
+            </div>
           </div>
         </div>
       </section>

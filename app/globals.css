@@ -126,8 +126,14 @@
 @layer base {
   * {
     @apply border-border;
+    min-width: 0;
+  }
+  html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
   }
   body {
+    overflow-x: hidden;
     min-height: 100vh;
     color: var(--text-primary);
     background: linear-gradient(135deg, #AADDFC 0%, #C2E6FC 50%, #DAF1FD 100%) fixed;
@@ -137,10 +143,8 @@
     background: #111315;
     color: #F5F7F8;
   }
-  html {
-    scroll-behavior: smooth;
-  }
 }
+
 
 /* RTL/LTR utilities */
 [dir="rtl"] .ltr\:left-3 { left: auto; right: 0.75rem; }

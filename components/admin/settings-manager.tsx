@@ -217,12 +217,12 @@ function ProfileSection() {
                 </div>
               ))}
             </div>
-            <div className="flex gap-2 pt-3 border-t">
+            <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t">
               <Input
                 value={newSocialKey}
                 onChange={(e) => setNewSocialKey(e.target.value)}
                 placeholder={t('admin.socialPlatform')}
-                className="w-32"
+                className="w-full sm:w-32"
               />
               <Input
                 value={newSocialValue}
@@ -380,7 +380,7 @@ function AvatarPicker({ avatarUrl, onAvatarChange }: { avatarUrl: string; onAvat
       />
 
       {imageSource === 'url' && (
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Input
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
@@ -1170,7 +1170,7 @@ function AdvancedSection() {
 
           <Separator />
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="space-y-1">
               <p className="text-sm font-medium">JSON Export</p>
               <p className="text-xs text-muted-foreground">

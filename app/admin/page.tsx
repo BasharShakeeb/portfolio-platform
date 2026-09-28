@@ -106,14 +106,14 @@ export default function AdminDashboard() {
             </div>
             <span className="font-bold text-lg text-[#155A82] dark:text-[#F5F7F8] hidden sm:inline">{t('admin.dashboard')}</span>
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
             {/* Theme Toggle Button */}
             {mounted && (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="h-9 w-9 p-0 rounded-xl border-white/65 bg-white/40 text-[#2477A8] hover:bg-white/65 dark:border-[#343A40] dark:bg-[#202428] dark:text-[#A7ADB4] dark:hover:text-white"
+                className="h-9 w-9 p-0 rounded-xl border-white/65 bg-white/40 text-[#2477A8] hover:bg-white/65 dark:border-[#343A40] dark:bg-[#202428] dark:text-[#A7ADB4] dark:hover:text-white hidden xs:flex"
                 title={t('theme.toggle')}
               >
                 {theme === 'dark' ? <Sun className="h-4 w-4 stroke-[1.8]" /> : <Moon className="h-4 w-4 stroke-[1.8]" />}
@@ -125,40 +125,40 @@ export default function AdminDashboard() {
               variant="outline"
               size="sm"
               onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-              className="gap-1.5 h-9 px-3 rounded-xl border-white/65 bg-white/40 text-xs font-medium text-[#2477A8] hover:bg-white/65 dark:border-[#343A40] dark:bg-[#202428] dark:text-[#F5F7F8] dark:hover:bg-[#25292D]"
+              className="gap-1 h-9 px-2 sm:px-3 rounded-xl border-white/65 bg-white/40 text-xs font-medium text-[#2477A8] hover:bg-white/65 dark:border-[#343A40] dark:bg-[#202428] dark:text-[#F5F7F8] dark:hover:bg-[#25292D]"
               title={lang === 'en' ? 'التحويل إلى العربية' : 'Switch to English'}
             >
               <Languages className="h-4 w-4 text-[#2BA8A2] dark:text-[#10B981] stroke-[1.8]" />
-              <span>{lang === 'en' ? 'العربية' : 'English'}</span>
+              <span className="hidden sm:inline">{lang === 'en' ? 'AR' : 'EN'}</span>
             </Button>
 
             {/* Admin Profile Info */}
-            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white/40 border border-white/65 text-[#155A82] dark:bg-[#202428] dark:border-[#343A40] dark:text-[#A7ADB4]">
+            <div className="flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-xl bg-white/40 border border-white/65 text-[#155A82] dark:bg-[#202428] dark:border-[#343A40] dark:text-[#A7ADB4]">
               {profile?.avatar_url ? (
                 <img
                   src={profile.avatar_url}
                   alt={profile.site_name || 'Admin'}
-                  className="h-7 w-7 rounded-full object-cover border border-white/65 dark:border-[#343A40]"
+                  className="h-7 w-7 rounded-full object-cover border border-white/65 dark:border-[#343A40] flex-shrink-0"
                 />
               ) : (
-                <div className="h-7 w-7 rounded-full bg-[#2BA8A2] dark:bg-[#10B981] text-white flex items-center justify-center text-xs font-bold">
+                <div className="h-7 w-7 rounded-full bg-[#2BA8A2] dark:bg-[#10B981] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
                   {session?.user?.email?.charAt(0).toUpperCase() || 'A'}
                 </div>
               )}
-              <span className="text-xs font-medium text-[#2477A8] dark:text-[#A7ADB4] hidden md:inline max-w-[140px] truncate">
+              <span className="text-xs font-medium text-[#2477A8] dark:text-[#A7ADB4] hidden lg:inline max-w-[120px] truncate">
                 {session?.user?.email}
               </span>
             </div>
 
             <Link href="/">
-              <Button variant="outline" size="sm" className="h-9 px-3 rounded-xl border-white/65 bg-white/40 text-xs font-medium text-[#2477A8] hover:bg-white/65 dark:border-[#343A40] dark:bg-[#202428] dark:text-[#F5F7F8] dark:hover:bg-[#25292D]">
-                <Home className="h-4 w-4 ltr:mr-1.5 rtl:ml-1.5 text-[#2477A8] dark:text-[#A7ADB4] stroke-[1.8]" />
-                <span className="hidden sm:inline">{t('nav.home')}</span>
+              <Button variant="outline" size="sm" className="h-9 px-2 sm:px-3 rounded-xl border-white/65 bg-white/40 text-xs font-medium text-[#2477A8] hover:bg-white/65 dark:border-[#343A40] dark:bg-[#202428] dark:text-[#F5F7F8] dark:hover:bg-[#25292D]">
+                <Home className="h-4 w-4 text-[#2477A8] dark:text-[#A7ADB4] stroke-[1.8]" />
+                <span className="hidden sm:inline ltr:ml-1.5 rtl:mr-1.5">{t('nav.home')}</span>
               </Button>
             </Link>
-            <Button variant="outline" size="sm" onClick={handleSignOut} className="h-9 px-3 rounded-xl border-[#EF4444]/30 bg-white/40 text-xs font-medium text-[#EF4444] hover:bg-[#EF4444]/15 dark:bg-[#202428]">
-              <LogOut className="h-4 w-4 ltr:mr-1.5 rtl:ml-1.5 stroke-[1.8]" />
-              <span className="hidden sm:inline">{t('nav.logout')}</span>
+            <Button variant="outline" size="sm" onClick={handleSignOut} className="h-9 px-2 sm:px-3 rounded-xl border-[#EF4444]/30 bg-white/40 text-xs font-medium text-[#EF4444] hover:bg-[#EF4444]/15 dark:bg-[#202428]">
+              <LogOut className="h-4 w-4 stroke-[1.8]" />
+              <span className="hidden sm:inline ltr:ml-1.5 rtl:mr-1.5">{t('nav.logout')}</span>
             </Button>
           </div>
         </div>

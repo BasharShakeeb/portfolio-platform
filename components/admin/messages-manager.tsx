@@ -127,7 +127,7 @@ export function MessagesManager() {
           {filtered.map((msg) => (
             <Card key={msg.id} className={cn('rounded-2xl border border-white/60 bg-white/38 text-[#155A82] backdrop-blur-[14px] shadow-[0_8px_30px_rgba(36,119,168,0.08)] transition-all dark:border-[#343A40] dark:bg-[#191C1F] dark:text-[#F5F7F8] dark:backdrop-blur-none', msg.status === 'unread' ? 'border-[#2BA8A2]/60 bg-white/55 dark:border-[#10B981]/40 dark:bg-[#10B981]/5' : 'hover:border-white/80 dark:hover:border-[#343A40]/80')}>
               <CardContent className="pt-5 pb-5">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
                   <div className="flex items-start gap-3.5 flex-1 min-w-0">
                     <div className="mt-0.5 p-2 rounded-xl bg-white/50 border border-white/65 dark:bg-[#202428] dark:border-[#343A40]">
                       {statusIcon(msg.status)}
@@ -160,7 +160,7 @@ export function MessagesManager() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex sm:flex-col gap-2 shrink-0 self-end sm:self-auto">
                     <Button variant="outline" size="sm" onClick={() => openReply(msg)} className="h-8 px-2.5 text-xs">
                       <Reply className="h-3.5 w-3.5 mr-1 stroke-[1.8]" />
                       {t('admin.reply')}

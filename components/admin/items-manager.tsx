@@ -193,7 +193,7 @@ export function ItemsManager() {
             <DialogTitle>{editingItem ? t('admin.edit') : t('admin.create')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>{t('admin.title')}</Label>
                 <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
@@ -231,7 +231,7 @@ export function ItemsManager() {
               <Label>{t('admin.tags')}</Label>
               <Input value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} placeholder="tag1, tag2, tag3" />
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div>
                 <Label>{t('filter.year')}</Label>
                 <Input
