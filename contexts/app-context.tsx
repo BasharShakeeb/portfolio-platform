@@ -25,13 +25,19 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Language>('en');
 
   useEffect(() => {
-    const saved = localStorage.getItem('portfolio-lang') as Language | null;
-    if (saved === 'en' || saved === 'ar') setLangState(saved);
+    try {
+      const saved = localStorage.getItem('portfolio-lang') as Language | null;
+      if (saved === 'en' || saved === 'ar') setLangState(saved);
+    } catch {
+      // In Safari private mode or if blocked, fallback gracefully
+    }
   }, []);
 
   const setLang = useCallback((l: Language) => {
     setLangState(l);
-    localStorage.setItem('portfolio-lang', l);
+    try {
+      localStorage.setItem('portfolio-lang', l);
+    } catch {}
   }, []);
 
   const t = useCallback((key: TranslationKey) => translations[lang][key] || key, [lang]);
@@ -63,13 +69,19 @@ export function ColorProvider({ children }: { children: React.ReactNode }) {
   const [hue, setHueState] = useState<number>(160);
 
   useEffect(() => {
-    const saved = localStorage.getItem('portfolio-hue');
-    if (saved) setHueState(parseInt(saved));
+    try {
+      const saved = localStorage.getItem('portfolio-hue');
+      if (saved) setHueState(parseInt(saved));
+    } catch {
+      // In Safari private mode or if blocked, fallback gracefully
+    }
   }, []);
 
   const setHue = useCallback((h: number) => {
     setHueState(h);
-    localStorage.setItem('portfolio-hue', String(h));
+    try {
+      localStorage.setItem('portfolio-hue', String(h));
+    } catch {}
     applyHue(h);
   }, []);
 

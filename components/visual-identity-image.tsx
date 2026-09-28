@@ -16,8 +16,10 @@ export function VisualIdentityImage({ field, className, fallback = null, decorat
   const src = getVisualIdentityUrl(settings?.[field]);
   const [failedUrl, setFailedUrl] = useState<string>();
   if (!src || failedUrl === src) return <>{fallback}</>;
+  const fieldEntry = visualIdentityFields.find((entry) => entry.key === field);
+  const altText = decorative ? '' : (fieldEntry?.[lang] || fieldEntry?.en || '');
   return (
-    <img src={src} alt={decorative ? '' : visualIdentityFields.find((entry) => entry.key === field)![lang]}
+    <img src={src} alt={altText}
       aria-hidden={decorative || undefined} className={className}
       onError={() => setFailedUrl(src)} />
   );

@@ -943,20 +943,26 @@ function AdvancedSection() {
   const isAr = lang === 'ar';
 
   useEffect(() => {
-    const saved = localStorage.getItem('portfolio-dev-mode');
-    if (saved === 'true') setDevMode(true);
-    const savedLogs = localStorage.getItem('portfolio-dev-logs');
-    if (savedLogs) {
-      try {
-        setLogs(JSON.parse(savedLogs));
-      } catch {
-        setLogs([]);
+    try {
+      const saved = localStorage.getItem('portfolio-dev-mode');
+      if (saved === 'true') setDevMode(true);
+      const savedLogs = localStorage.getItem('portfolio-dev-logs');
+      if (savedLogs) {
+        try {
+          setLogs(JSON.parse(savedLogs));
+        } catch {
+          setLogs([]);
+        }
       }
+    } catch {
+      // Safari private mode may block localStorage
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('portfolio-dev-mode', String(devMode));
+    try {
+      localStorage.setItem('portfolio-dev-mode', String(devMode));
+    } catch {}
   if (devMode) {
       checkDbConnection();
     }
@@ -964,7 +970,9 @@ function AdvancedSection() {
 
   useEffect(() => {
     if (devMode) {
-      localStorage.setItem('portfolio-dev-logs', JSON.stringify(logs.slice(-50)));
+      try {
+        localStorage.setItem('portfolio-dev-logs', JSON.stringify(logs.slice(-50)));
+      } catch {}
     }
   }, [logs, devMode]);
 

@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
+import { cn, safeFormatDate } from '@/lib/utils';
 
 export function MessagesManager() {
   const { t } = useLanguage();
@@ -156,7 +156,7 @@ export function MessagesManager() {
                         </div>
                       )}
                       <p className="text-xs text-[#6FA7C8] dark:text-[#737A82] mt-2.5">
-                        {new Date(msg.created_at).toLocaleString()}
+                        {safeFormatDate(msg.created_at)}
                       </p>
                     </div>
                   </div>

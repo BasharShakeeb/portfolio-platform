@@ -7,13 +7,38 @@ if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_A
   console.warn('Supabase environment variables are missing. Please check your .env file or Vercel Environment Variables.');
 }
 
+const safeLocalStorageAdapter = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem(key);
+      }
+    } catch {}
+    return null;
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, value);
+      }
+    } catch {}
+  },
+  removeItem: (key: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.removeItem(key);
+      }
+    } catch {}
+  },
+};
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-  detectSessionInUrl: true,
-  storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-  storageKey: 'portfolio-auth',
+    detectSessionInUrl: true,
+    storage: safeLocalStorageAdapter,
+    storageKey: 'portfolio-auth',
   },
 });
 

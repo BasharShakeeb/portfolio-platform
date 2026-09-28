@@ -126,21 +126,27 @@
 @layer base {
   * {
     @apply border-border;
-    min-width: 0;
+  }
+  html, body {
+    max-width: 100%;
+    overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
   }
   html {
-    overflow-x: hidden;
     scroll-behavior: smooth;
   }
   body {
-    overflow-x: hidden;
     min-height: 100vh;
+    min-height: 100dvh;
     color: var(--text-primary);
-    background: linear-gradient(135deg, #AADDFC 0%, #C2E6FC 50%, #DAF1FD 100%) fixed;
+    background-color: #AADDFC;
+    background-image: linear-gradient(135deg, #AADDFC 0%, #C2E6FC 50%, #DAF1FD 100%);
+    background-attachment: scroll;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
   .dark body {
-    background: #111315;
+    background-color: #111315;
+    background-image: none;
     color: #F5F7F8;
   }
 }

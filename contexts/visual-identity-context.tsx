@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { VISUAL_IDENTITY_UPDATED_EVENT, type VisualIdentitySettings } from '@/lib/visual-identity';
+import { safeTimeoutSignal } from '@/lib/utils';
 
 const Context = createContext<{ settings: VisualIdentitySettings | null; loaded: boolean }>({ settings: null, loaded: false });
 
@@ -13,8 +14,10 @@ export function VisualIdentityProvider({ children }: { children: React.ReactNode
   const reload = useCallback(async () => {
     const current = ++version.current;
     try {
-      const { data, error } = await supabase.from('visual_identity_settings').select('*')
-        .eq('id', true).abortSignal(AbortSignal.timeout(10000)).maybeSingle();
+      const signal = safeTimeoutSignal(10000);
+      let query = supabase.from('visual_identity_settings').select('*').eq('id', true);
+      if (signal) query = query.abortSignal(signal);
+      const { data, error } = await query.maybeSingle();
       if (!error && current === version.current) {
         setSettings(data as VisualIdentitySettings | null);
         setLoaded(true);

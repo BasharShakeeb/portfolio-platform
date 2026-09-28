@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth, useLanguage } from '@/contexts/app-context';
@@ -7,6 +7,7 @@ import { getVisualIdentityUrl, validateVisualIdentityFile, visualIdentityFields,
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { safeTimeoutSignal, safeRandomUUID } from '@/lib/utils';
 
 export function VisualIdentitySection() {
   const { session } = useAuth();
@@ -21,8 +22,10 @@ export function VisualIdentitySection() {
     setLoading(true);
     setNotice(null);
     try {
-      const { data, error } = await supabase.from('visual_identity_settings')
-        .select('*').eq('id', true).abortSignal(AbortSignal.timeout(10000)).maybeSingle();
+      const signal = safeTimeoutSignal(10000);
+      let query = supabase.from('visual_identity_settings').select('*').eq('id', true);
+      if (signal) query = query.abortSignal(signal);
+      const { data, error } = await query.maybeSingle();
       if (version !== request.current) return;
       if (error) throw error;
       const row = data as VisualIdentitySettings | null;
@@ -93,7 +96,7 @@ function ImageField({ field, savedPath, canWrite, reload, onSaved }: {
       if (authError || !auth.user) throw new Error('unauthorized');
       const userId = auth.user.id;
       if (!deleting && prepared) {
-        const path = `${userId}/${field.key}/${crypto.randomUUID()}.${prepared.extension}`;
+        const path = `${userId}/${field.key}/${safeRandomUUID()}.${prepared.extension}`;
         const { error: uploadError } = await supabase.storage.from(VISUAL_IDENTITY_BUCKET).upload(path, prepared.blob,
           { contentType: prepared.contentType, cacheControl: '31536000', upsert: false });
         if (uploadError) throw uploadError;

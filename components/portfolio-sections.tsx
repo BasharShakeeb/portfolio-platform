@@ -468,7 +468,7 @@ export function PortfolioSections() {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                          <span className="text-white text-xs font-medium flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded-full">
+                          <span className="text-white text-xs font-medium flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full">
                             <Eye className="h-3.5 w-3.5 stroke-[1.8]" />
                             {lang === 'ar' ? 'عرض التفاصيل' : 'View Details'}
                           </span>

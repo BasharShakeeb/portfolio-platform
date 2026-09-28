@@ -254,7 +254,7 @@ export default function AdminDashboard() {
       {/* Mobile Drawer Backdrop */}
       <div
         className={cn(
-          'fixed inset-0 z-50 bg-black/60 backdrop-blur-xs transition-opacity duration-300 md:hidden',
+          'fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden',
           mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         onClick={() => setMobileOpen(false)}
