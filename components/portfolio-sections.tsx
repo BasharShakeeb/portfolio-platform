@@ -169,9 +169,8 @@ export function PortfolioSections() {
   return (
     <div className="pt-16">
       {/* Hero */}
-      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden border-b">
-        <VisualIdentityImage field="hero_background_path" decorative className="absolute inset-0 w-full h-full object-cover opacity-25" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/10" />
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden border-b border-white/50 dark:border-border">
+        <VisualIdentityImage field="hero_background_path" decorative className="absolute inset-0 w-full h-full object-cover" />
         <div className="container mx-auto px-4 py-20 text-center relative z-10">
           {profileLoading ? (
             <div className="space-y-4 max-w-2xl mx-auto">
@@ -187,7 +186,7 @@ export function PortfolioSections() {
             <>
               {profile?.avatar_url && (
                 <div className="mx-auto mb-6 max-w-[200px]">
-                  <div className="rounded-2xl overflow-hidden border-4 border-primary/20 shadow-lg bg-muted/30">
+                  <div className="rounded-2xl overflow-hidden border-4 border-white/60 dark:border-primary/20 shadow-lg bg-white/20 dark:bg-muted/30">
                     <img
                       src={profile.avatar_url}
                       alt={profile.site_name}
@@ -199,11 +198,11 @@ export function PortfolioSections() {
                   </div>
                 </div>
               )}
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#155A82] to-[#2477A8] dark:from-foreground dark:to-foreground/60 bg-clip-text text-transparent">
                 {profile?.site_name || 'My Portfolio'}
               </h1>
               {profile?.bio && (
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+                <p className="text-lg text-[#2477A8] dark:text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed font-normal">
                   {profile.bio}
                 </p>
               )}
@@ -224,21 +223,21 @@ export function PortfolioSections() {
 
               {/* Stats Counters */}
               {items.length > 0 && (
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-xl mx-auto p-1.5 rounded-full bg-[#FAF7F2] dark:bg-muted/40 border border-orange-100 dark:border-border shadow-xs">
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-card text-[#374151] dark:text-foreground border border-gray-200/80 dark:border-border shadow-2xs flex items-center gap-1.5">
-                    <FolderGit2 className="h-3.5 w-3.5 text-brandPrimary" />
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-xl mx-auto p-1.5 rounded-full bg-white/35 dark:bg-muted/40 border border-white/60 dark:border-border shadow-[0_8px_30px_rgba(36,119,168,0.08)] backdrop-blur-md">
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/60 dark:bg-card text-[#155A82] dark:text-foreground border border-white/65 dark:border-border shadow-xs flex items-center gap-1.5">
+                    <FolderGit2 className="h-3.5 w-3.5 text-[#2BA8A2]" />
                     {items.filter(i => i.category === 'projects').length} {t('section.projects')}
                   </span>
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-card text-[#374151] dark:text-foreground border border-gray-200/80 dark:border-border shadow-2xs flex items-center gap-1.5">
-                    <Award className="h-3.5 w-3.5 text-citrusAmber" />
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/60 dark:bg-card text-[#155A82] dark:text-foreground border border-white/65 dark:border-border shadow-xs flex items-center gap-1.5">
+                    <Award className="h-3.5 w-3.5 text-[#F59E0B]" />
                     {items.filter(i => i.category === 'awards').length} {t('section.awards')}
                   </span>
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-card text-[#374151] dark:text-foreground border border-gray-200/80 dark:border-border shadow-2xs flex items-center gap-1.5">
-                    <GraduationCap className="h-3.5 w-3.5 text-botanicalGreen" />
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/60 dark:bg-card text-[#155A82] dark:text-foreground border border-white/65 dark:border-border shadow-xs flex items-center gap-1.5">
+                    <GraduationCap className="h-3.5 w-3.5 text-[#22C55E]" />
                     {items.filter(i => i.category === 'certificates').length} {t('section.certificates')}
                   </span>
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-card text-[#374151] dark:text-foreground border border-gray-200/80 dark:border-border shadow-2xs flex items-center gap-1.5">
-                    <BookOpen className="h-3.5 w-3.5 text-saleCrimson" />
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/60 dark:bg-card text-[#155A82] dark:text-foreground border border-white/65 dark:border-border shadow-xs flex items-center gap-1.5">
+                    <BookOpen className="h-3.5 w-3.5 text-[#EF4444]" />
                     {items.filter(i => i.category === 'research').length} {t('section.research')}
                   </span>
                 </div>
@@ -315,11 +314,11 @@ export function PortfolioSections() {
       </section>
 
       {/* Search & Filters */}
-      <section className="sticky top-16 z-40 bg-background/80 backdrop-blur-md border-b py-4">
+      <section className="sticky top-16 z-40 bg-[rgba(170,221,252,0.40)] dark:bg-background/80 backdrop-blur-md border-b border-white/55 dark:border-border py-4">
         <div className="container mx-auto px-4 space-y-3">
           <div className="flex flex-col md:flex-row gap-3">
             <div className="relative flex-1">
-              <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 h-4 w-4 text-[#2477A8] dark:text-muted-foreground stroke-[1.8]" />
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -371,14 +370,14 @@ export function PortfolioSections() {
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant="ghost" size="sm" onClick={clearFilters}>
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-[#2477A8] hover:bg-white/40 dark:text-muted-foreground">
                 {t('filter.clear')}
               </Button>
             </div>
           </div>
 
           {/* Category tabs */}
-          <div className="flex gap-2 flex-wrap items-center p-1.5 rounded-full bg-[#FAF7F2] dark:bg-muted/40 border border-orange-100 dark:border-border w-fit shadow-xs">
+          <div className="flex gap-2 flex-wrap items-center p-1.5 rounded-full bg-white/35 dark:bg-muted/40 border border-white/60 dark:border-border w-fit shadow-[0_8px_30px_rgba(36,119,168,0.08)] backdrop-blur-md">
             <Button
               variant={activeCategory === 'all' ? 'pillActive' : 'pill'}
               size="pill"
@@ -388,7 +387,7 @@ export function PortfolioSections() {
               {t('section.all')}
               <span className={cn(
                 'ml-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold transition-colors',
-                activeCategory === 'all' ? 'bg-white/20 text-white' : 'bg-orange-100 dark:bg-muted text-brandPrimary'
+                activeCategory === 'all' ? 'bg-white/25 text-white' : 'bg-white/60 dark:bg-muted text-[#2477A8] dark:text-foreground'
               )}>
                 {items.length}
               </span>
@@ -408,7 +407,7 @@ export function PortfolioSections() {
                   {count > 0 && (
                     <span className={cn(
                       'ml-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold transition-colors',
-                      isActive ? 'bg-white/20 text-white' : 'bg-orange-100 dark:bg-muted text-brandPrimary'
+                      isActive ? 'bg-white/25 text-white' : 'bg-white/60 dark:bg-muted text-[#2477A8] dark:text-foreground'
                     )}>
                       {count}
                     </span>
@@ -457,18 +456,18 @@ export function PortfolioSections() {
                       setSelectedItem(item);
                       setDetailsOpen(true);
                     }}
-                    className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer border border-[#e5e7eb] dark:border-border rounded-2xl bg-card hover:border-brandPrimary/30"
+                    className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer border border-white/60 dark:border-border rounded-2xl bg-white/38 dark:bg-card hover:border-[#2BA8A2]/50 dark:hover:border-primary/40 backdrop-blur-[14px] dark:backdrop-blur-none"
                   >
                     {item.image_url && (
-                      <div className="aspect-video overflow-hidden bg-muted relative">
+                      <div className="aspect-video overflow-hidden bg-white/10 dark:bg-muted relative">
                         <img
                           src={item.image_url}
                           alt={item.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
                           <span className="text-white text-xs font-medium flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded-full">
-                            <Eye className="h-3.5 w-3.5" />
+                            <Eye className="h-3.5 w-3.5 stroke-[1.8]" />
                             {lang === 'ar' ? 'عرض التفاصيل' : 'View Details'}
                           </span>
                         </div>
@@ -480,7 +479,7 @@ export function PortfolioSections() {
                           <Badge variant={getCategoryVariant(item.category) as any} className="mb-2 text-xs uppercase tracking-wide">
                             {t(`section.${item.category}` as any) || item.category}
                           </Badge>
-                          <CardTitle className="text-lg group-hover:text-brandPrimary transition-colors leading-snug">
+                          <CardTitle className="text-lg text-[#155A82] group-hover:text-[#2BA8A2] dark:text-card-foreground dark:group-hover:text-primary transition-colors leading-snug">
                             {item.title}
                           </CardTitle>
                         </div>
@@ -490,23 +489,23 @@ export function PortfolioSections() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="text-muted-foreground hover:text-brandPrimary p-1 rounded-full hover:bg-muted transition-colors"
+                            className="text-[#2477A8] hover:text-[#2BA8A2] dark:text-muted-foreground dark:hover:text-primary p-1 rounded-full hover:bg-white/40 dark:hover:bg-muted transition-colors"
                             title={lang === 'ar' ? 'رابط خارجي' : 'External link'}
                           >
-                            <ExternalLink className="h-4 w-4" />
+                            <ExternalLink className="h-4 w-4 stroke-[1.8]" />
                           </a>
                         )}
                       </div>
                       {formatDate(item) && (
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <Calendar className="h-3 w-3 text-muted-foreground/70" />
+                        <div className="flex items-center gap-1.5 text-xs text-[#2477A8] dark:text-muted-foreground">
+                          <Calendar className="h-3 w-3 stroke-[1.8]" />
                           {formatDate(item)}
                         </div>
                       )}
                     </CardHeader>
                     <CardContent className="space-y-3">
                       {item.description && (
-                        <CardDescription className="line-clamp-3 text-sm leading-relaxed">
+                        <CardDescription className="line-clamp-3 text-sm text-[#2477A8] dark:text-muted-foreground leading-relaxed">
                           {item.description}
                         </CardDescription>
                       )}
@@ -514,7 +513,7 @@ export function PortfolioSections() {
                         <div className="flex flex-wrap gap-1.5 pt-1">
                           {item.tags.map((tag) => (
                             <Badge key={tag} variant="pill" className="text-xs py-0.5 px-2">
-                              <Tag className="h-2.5 w-2.5 mr-1 text-muted-foreground" />
+                              <Tag className="h-2.5 w-2.5 mr-1 text-[#2477A8] dark:text-muted-foreground stroke-[1.8]" />
                               {tag}
                             </Badge>
                           ))}
@@ -537,17 +536,17 @@ export function PortfolioSections() {
       />
 
       {/* Contact section */}
-      <section id="contact" className="container mx-auto px-4 py-20 border-t">
+      <section id="contact" className="container mx-auto px-4 py-20 border-t border-white/40 dark:border-border">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-2">{t('section.contact')}</h2>
-          <p className="text-center text-muted-foreground mb-8">{t('hero.contact')}</p>
+          <h2 className="text-3xl font-bold text-center mb-2 text-[#155A82] dark:text-foreground">{t('section.contact')}</h2>
+          <p className="text-center text-[#2477A8] dark:text-muted-foreground mb-8">{t('hero.contact')}</p>
 
-          <Card className="rounded-2xl border border-gray-200/80 dark:border-border shadow-md">
+          <Card className="rounded-2xl border border-white/60 bg-white/38 dark:border-border dark:bg-card shadow-[0_8px_30px_rgba(36,119,168,0.08)] backdrop-blur-[14px] dark:backdrop-blur-none">
             <CardContent className="pt-6">
               <form onSubmit={handleContact} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium mb-1.5 block">{t('contact.name')}</label>
+                    <label className="text-sm font-medium mb-1.5 block text-[#155A82] dark:text-foreground">{t('contact.name')}</label>
                     <Input
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
@@ -556,7 +555,7 @@ export function PortfolioSections() {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium mb-1.5 block">{t('contact.email')}</label>
+                    <label className="text-sm font-medium mb-1.5 block text-[#155A82] dark:text-foreground">{t('contact.email')}</label>
                     <Input
                       type="email"
                       value={contactForm.email}
@@ -567,7 +566,7 @@ export function PortfolioSections() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1.5 block">{t('contact.subject')}</label>
+                  <label className="text-sm font-medium mb-1.5 block text-[#155A82] dark:text-foreground">{t('contact.subject')}</label>
                   <Input
                     value={contactForm.subject}
                     onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
@@ -575,17 +574,17 @@ export function PortfolioSections() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1.5 block">{t('contact.message')}</label>
+                  <label className="text-sm font-medium mb-1.5 block text-[#155A82] dark:text-foreground">{t('contact.message')}</label>
                   <textarea
                     value={contactForm.message}
                     onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                     required
                     rows={5}
-                    className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="w-full rounded-xl border border-white/65 bg-white/45 px-3.5 py-2 text-sm text-[#155A82] placeholder:text-[#6FA7C8] backdrop-blur-md focus-visible:outline-none focus-visible:border-[#84C9F8] focus-visible:ring-3 focus-visible:ring-[#84C9F8]/20 transition-colors dark:border-[#343A40] dark:bg-[#202428] dark:text-[#F5F7F8] dark:placeholder:text-[#737A82] dark:focus-visible:border-[#10B981] dark:focus-visible:ring-1 dark:focus-visible:ring-[#10B981] dark:backdrop-blur-none"
                   />
                 </div>
                 <Button variant="brand" type="submit" disabled={sending} className="w-full rounded-full font-semibold shadow-sm">
-                  <Send className="h-4 w-4 mr-2" />
+                  <Send className="h-4 w-4 mr-2 stroke-[1.8]" />
                   {sending ? t('common.loading') : t('contact.send')}
                 </Button>
               </form>

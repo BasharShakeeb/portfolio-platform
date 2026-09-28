@@ -39,27 +39,29 @@ export function Navbar() {
     <nav
       className={cn(
         'fixed top-0 inset-x-0 z-50 transition-all duration-300',
-        scrolled ? 'bg-background/80 backdrop-blur-md border-b shadow-sm' : 'bg-transparent'
+        scrolled
+          ? 'bg-[rgba(170,221,252,0.45)] backdrop-blur-[18px] border-b border-white/55 shadow-[0_8px_30px_rgba(36,119,168,0.08)] dark:bg-[#111315]/85 dark:border-[#343A40] dark:shadow-sm'
+          : 'bg-transparent'
       )}
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between" dir="rtl">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg" dir="ltr">
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg text-[#155A82] dark:text-foreground transition-colors" dir="ltr">
           <VisualIdentityImage field="portfolio_logo_path" className="h-8 w-8 rounded-lg object-contain"
-            fallback={<span className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground text-sm">P</span>} />
+            fallback={<span className="h-8 w-8 rounded-lg bg-[#2BA8A2] dark:bg-primary flex items-center justify-center text-white text-sm shadow-xs">P</span>} />
           <span className="hidden sm:inline">Portfolio</span>
         </Link>
 
         {/* Desktop nav */}
         <div
           dir={dir}
-          className="hidden md:flex items-center gap-1 p-1 rounded-full bg-[#FAF7F2]/80 dark:bg-muted/40 border border-orange-100 dark:border-border shadow-2xs backdrop-blur-xs"
+          className="hidden md:flex items-center gap-1 p-1 rounded-full bg-[rgba(170,221,252,0.35)] dark:bg-muted/40 border border-white/55 dark:border-border shadow-[0_8px_30px_rgba(36,119,168,0.08)] dark:shadow-2xs backdrop-blur-[18px]"
         >
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="px-3.5 py-1.5 text-xs font-semibold text-[#374151] dark:text-muted-foreground hover:text-brandPrimary dark:hover:text-foreground transition-all rounded-full hover:bg-white dark:hover:bg-card hover:shadow-2xs"
+              className="px-3.5 py-1.5 text-xs font-semibold text-[#2477A8] dark:text-muted-foreground hover:text-[#2BA8A2] dark:hover:text-foreground transition-all rounded-full hover:bg-white/60 dark:hover:bg-card hover:shadow-2xs"
             >
               {link.label}
             </Link>
@@ -71,10 +73,11 @@ export function Navbar() {
           <Button
             variant="ghost"
             size="icon"
+            className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white"
             onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
             title={lang === 'en' ? 'العربية' : 'English'}
           >
-            <Languages className="h-4 w-4" />
+            <Languages className="h-4 w-4 stroke-[1.8]" />
             <span className="ml-1 text-xs">{lang === 'en' ? 'AR' : 'EN'}</span>
           </Button>
 
@@ -84,23 +87,24 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
+              className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               title={t('theme.toggle')}
             >
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              {theme === 'dark' ? <Sun className="h-4 w-4 stroke-[1.8]" /> : <Moon className="h-4 w-4 stroke-[1.8]" />}
             </Button>
           )}
 
           {session ? (
             <Link href="/admin">
-              <Button variant="ghost" size="icon" title={t('nav.dashboard')}>
-                <Shield className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white" title={t('nav.dashboard')}>
+                <Shield className="h-4 w-4 stroke-[1.8]" />
               </Button>
             </Link>
           ) : (
             <Link href="/admin/login">
-              <Button variant="ghost" size="icon" title={t('nav.login')}>
-                <Shield className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white" title={t('nav.login')}>
+                <Shield className="h-4 w-4 stroke-[1.8]" />
               </Button>
             </Link>
           )}
@@ -108,24 +112,24 @@ export function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4]"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {menuOpen ? <X className="h-5 w-5 stroke-[1.8]" /> : <Menu className="h-5 w-5 stroke-[1.8]" />}
           </Button>
         </div>
       </div>
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-b bg-background" dir={dir}>
+        <div className="md:hidden border-b border-white/60 bg-[rgba(218,241,253,0.95)] backdrop-blur-[20px] dark:bg-[#191C1F] dark:border-border" dir={dir}>
           <div className="container mx-auto px-4 py-3 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md"
+                className="block px-3 py-2 text-sm font-medium text-[#2477A8] hover:text-[#155A82] hover:bg-white/50 dark:text-muted-foreground dark:hover:text-foreground dark:hover:bg-accent rounded-xl"
               >
                 {link.label}
               </Link>

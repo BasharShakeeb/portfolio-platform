@@ -32,16 +32,16 @@ export default function Home() {
           variant={matrixActive ? 'brand' : 'pill'}
           size="pill"
           onClick={() => setMatrixActive(!matrixActive)}
-          className="shadow-lg border border-gray-200/80 dark:border-border font-medium"
+          className="shadow-lg border border-white/65 dark:border-border font-medium"
         >
-          <Terminal className="h-3.5 w-3.5 mr-2" />
+          <Terminal className="h-3.5 w-3.5 mr-2 stroke-[1.8]" />
           {matrixActive ? t('matrix.deactivate') : t('matrix.activate')}
         </Button>
       </div>
 
       {/* Footer */}
-      <footer className="border-t py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+      <footer className="border-t border-white/40 dark:border-border py-8">
+        <div className="container mx-auto px-4 text-center text-sm text-[#2477A8] dark:text-muted-foreground">
           <VisualIdentityImage field="brand_mark_path" className="h-12 w-12 object-contain mx-auto mb-3" />
           <p>&copy; {new Date().getFullYear()} {t('footer.rights')}</p>
         </div>

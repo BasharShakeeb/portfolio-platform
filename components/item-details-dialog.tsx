@@ -44,31 +44,31 @@ export function ItemDetailsDialog({ item, open, onOpenChange }: ItemDetailsDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border bg-card p-6 shadow-2xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-white/65 bg-white/85 backdrop-blur-[20px] p-6 shadow-[0_15px_50px_rgba(36,119,168,0.12)] text-[#155A82] dark:border-[#343A40] dark:bg-[#191C1F] dark:text-[#F5F7F8]">
         <DialogHeader className="space-y-3">
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant={getCategoryBadgeVariant(item.category) as any} className="text-xs uppercase tracking-wide">
               {t(`section.${item.category}` as any) || item.category}
             </Badge>
             {formatDate(item) && (
-              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/60 px-2.5 py-1 rounded-full border">
-                <Calendar className="h-3 w-3" />
+              <span className="inline-flex items-center gap-1.5 text-xs text-[#2477A8] dark:text-muted-foreground bg-white/50 dark:bg-muted/60 px-2.5 py-1 rounded-full border border-white/65 dark:border-border">
+                <Calendar className="h-3 w-3 stroke-[1.8]" />
                 {formatDate(item)}
               </span>
             )}
           </div>
-          <DialogTitle className="text-2xl font-bold tracking-tight text-foreground">
+          <DialogTitle className="text-2xl font-bold tracking-tight text-[#155A82] dark:text-[#F5F7F8]">
             {item.title}
           </DialogTitle>
           {item.description && (
-            <DialogDescription className="text-base text-muted-foreground leading-relaxed">
+            <DialogDescription className="text-base text-[#2477A8] dark:text-muted-foreground leading-relaxed font-normal">
               {item.description}
             </DialogDescription>
           )}
         </DialogHeader>
 
         {item.image_url && (
-          <div className="my-3 overflow-hidden rounded-xl border bg-muted/30 max-h-80 flex items-center justify-center">
+          <div className="my-3 overflow-hidden rounded-xl border border-white/60 dark:border-border bg-white/20 dark:bg-muted/30 max-h-80 flex items-center justify-center">
             <img
               src={item.image_url}
               alt={item.title}
@@ -78,11 +78,11 @@ export function ItemDetailsDialog({ item, open, onOpenChange }: ItemDetailsDialo
         )}
 
         {item.content && (
-          <div className="my-4 rounded-xl bg-pulpCream/50 dark:bg-muted/20 border border-orange-100 dark:border-border p-4">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+          <div className="my-4 rounded-xl bg-white/40 dark:bg-muted/20 border border-white/60 dark:border-border p-4">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2477A8] dark:text-muted-foreground mb-2">
               {lang === 'ar' ? 'التفاصيل الكاملة' : 'Detailed Overview'}
             </h4>
-            <div className="prose prose-sm dark:prose-invert max-w-none text-foreground/90 whitespace-pre-wrap leading-relaxed">
+            <div className="prose prose-sm dark:prose-invert max-w-none text-[#155A82] dark:text-foreground/90 whitespace-pre-wrap leading-relaxed">
               {item.content}
             </div>
           </div>

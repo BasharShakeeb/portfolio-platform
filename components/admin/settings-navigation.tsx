@@ -63,8 +63,8 @@ export function SettingsNavigation({ active, section, onSelect }: {
             requestAnimationFrame(() => root.current?.querySelector<HTMLButtonElement>('[data-settings-item]')?.focus());
           }
         }}
-        className={cn('flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-start text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#10B981]',
-          active ? 'bg-[#10B981] text-white shadow-sm font-semibold' : 'text-[#A7ADB4] hover:text-[#F5F7F8] hover:bg-[#25292D]')}>
+        className={cn('flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-start text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2BA8A2] dark:focus-visible:ring-[#10B981]',
+          active ? 'bg-[#2BA8A2] dark:bg-[#10B981] text-white shadow-sm font-semibold' : 'text-[#2477A8] hover:text-[#155A82] hover:bg-white/45 dark:text-[#A7ADB4] dark:hover:text-[#F5F7F8] dark:hover:bg-[#25292D]')}>
         <Settings className="h-5 w-5 shrink-0 stroke-[1.8]" aria-hidden="true" />
         <span className="flex-1">{t('admin.settings')}</span>
         <ChevronRight className="hidden h-4 w-4 md:block rtl:rotate-180 opacity-70" aria-hidden="true" />
@@ -74,15 +74,15 @@ export function SettingsNavigation({ active, section, onSelect }: {
       <div id="admin-settings-submenu" aria-hidden={!open}
         className={cn('md:absolute md:top-0 md:z-[60] md:w-72 md:ltr:left-full md:rtl:right-full md:ltr:pl-1 md:rtl:pr-1 transition-[opacity,transform] duration-150 motion-reduce:transition-none',
           open ? 'visible mt-2 opacity-100 md:mt-0 translate-y-0' : 'invisible hidden pointer-events-none opacity-0 md:block md:translate-y-1')}>
-        <div className="rounded-2xl border border-[#343A40] bg-[#25292D] p-2 shadow-2xl">
+        <div className="rounded-2xl border border-white/65 bg-white/85 text-[#155A82] backdrop-blur-[20px] p-2 shadow-[0_15px_50px_rgba(36,119,168,0.12)] dark:border-[#343A40] dark:bg-[#25292D] dark:text-[#F5F7F8] dark:shadow-2xl dark:backdrop-blur-none">
           <ul aria-label={t('admin.settings')} className="space-y-1">
             {sections.map((item) => (
               <li key={item.id}>
                 <button type="button" data-settings-item tabIndex={open ? 0 : -1}
                   aria-current={active && section === item.id ? 'page' : undefined}
                   onClick={() => { onSelect(item.id); trigger.current?.focus(); close(); }}
-                  className={cn('flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-start text-sm transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#10B981]',
-                    active && section === item.id ? 'bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-semibold' : 'text-[#A7ADB4] hover:bg-[#2B3035] hover:text-[#F5F7F8]')}>
+                  className={cn('flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-start text-sm transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2BA8A2] dark:focus-visible:ring-[#10B981]',
+                    active && section === item.id ? 'bg-[#2BA8A2]/15 text-[#2BA8A2] border border-[#2BA8A2]/30 dark:bg-[#10B981]/15 dark:text-[#10B981] dark:border-[#10B981]/30 font-semibold' : 'text-[#2477A8] hover:bg-white/50 hover:text-[#155A82] dark:text-[#A7ADB4] dark:hover:bg-[#2B3035] dark:hover:text-[#F5F7F8]')}>
                   <item.icon className="h-4 w-4 shrink-0 stroke-[1.8]" aria-hidden="true" />
                   <span>{item[lang]}</span>
                 </button>

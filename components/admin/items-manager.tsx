@@ -136,41 +136,41 @@ export function ItemsManager() {
             );
           })}
         </div>
-        <Button onClick={openCreate} size="sm" className="bg-[#10B981] hover:bg-[#22C55E] text-white">
+        <Button onClick={openCreate} size="sm" variant="brand">
           <Plus className="h-4 w-4 mr-2 stroke-[1.8]" />
           {t('admin.create')}
         </Button>
       </div>
 
       {loading ? (
-        <p className="text-[#A7ADB4] text-center py-8 text-sm">{t('common.loading')}</p>
+        <p className="text-[#2477A8] dark:text-[#A7ADB4] text-center py-8 text-sm">{t('common.loading')}</p>
       ) : filtered.length === 0 ? (
-        <div className="rounded-2xl border border-[#343A40] bg-[#191C1F] p-12 text-center">
-          <p className="text-[#A7ADB4] text-sm font-medium">{t('common.noData')}</p>
+        <div className="rounded-2xl border border-white/60 bg-white/38 backdrop-blur-[14px] shadow-[0_8px_30px_rgba(36,119,168,0.08)] p-12 text-center dark:border-[#343A40] dark:bg-[#191C1F] dark:backdrop-blur-none">
+          <p className="text-[#2477A8] dark:text-[#A7ADB4] text-sm font-medium">{t('common.noData')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((item) => (
-            <Card key={item.id} className="overflow-hidden rounded-2xl border border-[#343A40] bg-[#191C1F] text-[#F5F7F8] shadow-sm hover:border-[#10B981]/40 transition-all">
+            <Card key={item.id} className="overflow-hidden rounded-2xl border border-white/60 bg-white/38 text-[#155A82] backdrop-blur-[14px] shadow-[0_8px_30px_rgba(36,119,168,0.08)] hover:border-[#2BA8A2]/50 dark:border-[#343A40] dark:bg-[#191C1F] dark:text-[#F5F7F8] dark:hover:border-[#10B981]/40 dark:backdrop-blur-none transition-all">
               {item.image_url && (
-                <div className="aspect-video overflow-hidden bg-[#202428] border-b border-[#343A40]">
+                <div className="aspect-video overflow-hidden bg-white/20 border-b border-white/55 dark:bg-[#202428] dark:border-[#343A40]">
                   <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
                 </div>
               )}
               <CardContent className="pt-4 pb-4">
-                <Badge className="mb-2 text-xs rounded-lg bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-medium">
+                <Badge className="mb-2 text-xs rounded-lg bg-[#2BA8A2]/15 text-[#2BA8A2] border border-[#2BA8A2]/30 dark:bg-[#10B981]/15 dark:text-[#10B981] dark:border-[#10B981]/30 font-medium">
                   {t(`section.${item.category}` as any) || item.category}
                 </Badge>
-                <h3 className="font-semibold text-[#F5F7F8] mb-1 line-clamp-1">{item.title}</h3>
-                <p className="text-sm text-[#A7ADB4] line-clamp-2 mb-3 leading-relaxed">{item.description}</p>
+                <h3 className="font-semibold text-[#155A82] dark:text-[#F5F7F8] mb-1 line-clamp-1">{item.title}</h3>
+                <p className="text-sm text-[#2477A8] dark:text-[#A7ADB4] line-clamp-2 mb-3 leading-relaxed">{item.description}</p>
                 {item.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mb-3.5">
                     {item.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} className="text-xs rounded-md bg-[#202428] border border-[#343A40] text-[#A7ADB4] font-normal">{tag}</Badge>
+                      <Badge key={tag} className="text-xs rounded-md bg-white/50 border border-white/65 text-[#2477A8] dark:bg-[#202428] dark:border-[#343A40] dark:text-[#A7ADB4] font-normal">{tag}</Badge>
                     ))}
                   </div>
                 )}
-                <div className="flex gap-2 pt-2 border-t border-[#343A40]/60">
+                <div className="flex gap-2 pt-2 border-t border-white/55 dark:border-[#343A40]/60">
                   <Button variant="outline" size="sm" onClick={() => openEdit(item)} className="h-8 px-2.5 text-xs">
                     <Pencil className="h-3.5 w-3.5 mr-1 stroke-[1.8]" />
                     {t('admin.edit')}
@@ -275,11 +275,11 @@ export function ItemsManager() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>
-              <X className="h-4 w-4 mr-2" />
+              <X className="h-4 w-4 mr-2 stroke-[1.8]" />
               {t('admin.cancel')}
             </Button>
-            <Button onClick={handleSave}>
-              <Save className="h-4 w-4 mr-2" />
+            <Button onClick={handleSave} variant="brand">
+              <Save className="h-4 w-4 mr-2 stroke-[1.8]" />
               {t('admin.save')}
             </Button>
           </DialogFooter>
@@ -381,12 +381,12 @@ function UploadHub({
         {showDropdown && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setShowDropdown(false)} />
-            <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-md border bg-popover shadow-md overflow-hidden">
+            <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-xl border border-white/65 bg-white/90 backdrop-blur-[20px] shadow-[0_15px_50px_rgba(36,119,168,0.12)] text-[#155A82] dark:border-[#343A40] dark:bg-[#191C1F] dark:text-[#F5F7F8] overflow-hidden">
               {hubOptions.map((opt) => (
                 <button
                   key={opt.id}
                   type="button"
-                  className="flex items-center gap-2 w-full px-3 py-2.5 text-sm hover:bg-accent transition-colors text-left"
+                  className="flex items-center gap-2 w-full px-3.5 py-2.5 text-sm text-[#2477A8] hover:bg-white/60 hover:text-[#155A82] dark:text-[#F5F7F8] dark:hover:bg-[#25292D] transition-colors text-left"
                   onClick={() => {
                     setHubMode(opt.id);
                     setShowDropdown(false);
@@ -397,7 +397,7 @@ function UploadHub({
                     }
                   }}
                 >
-                  <opt.icon className="h-4 w-4" />
+                  <opt.icon className="h-4 w-4 stroke-[1.8]" />
                   {opt.label}
                 </button>
               ))}
@@ -461,7 +461,7 @@ function UploadHub({
 
       {/* Media preview */}
       {imageUrl && (
-        <div className="rounded-lg border overflow-hidden bg-muted/30">
+        <div className="rounded-xl border border-white/60 bg-white/40 dark:border-[#343A40] dark:bg-[#191C1F]/50 overflow-hidden shadow-sm">
           {isVideo ? (
             <video
               src={imageUrl}
@@ -476,11 +476,11 @@ function UploadHub({
               onError={() => toast.error(t('cv.uploadError'))}
             />
           )}
-          <div className="flex items-center justify-between p-2 bg-muted/50">
-            <span className="text-xs text-muted-foreground">
+          <div className="flex items-center justify-between p-2.5 bg-white/60 dark:bg-[#191C1F] border-t border-white/50 dark:border-[#343A40]">
+            <span className="text-xs text-[#2477A8] dark:text-muted-foreground font-medium">
               {isVideo ? 'Video' : 'Image'} {t('admin.filePreview')}
             </span>
-            <Button type="button" variant="ghost" size="sm" onClick={handleRemoveMedia} className="h-7 gap-1 text-destructive">
+            <Button type="button" variant="ghost" size="sm" onClick={handleRemoveMedia} className="h-7 gap-1 text-destructive hover:bg-destructive/10">
               <X className="h-3 w-3" />
               {t('cv.removeImage')}
             </Button>

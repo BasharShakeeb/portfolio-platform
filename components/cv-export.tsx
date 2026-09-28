@@ -199,21 +199,21 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
             <button
               onClick={() => handleDownload('standard')}
               disabled={generating !== null}
-              className="w-full text-left rounded-2xl border-2 border-gray-200/80 dark:border-border p-4 hover:border-brandPrimary hover:bg-orange-50/30 dark:hover:bg-orange-950/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs"
+              className="w-full text-left rounded-2xl border border-white/65 dark:border-border bg-white/40 dark:bg-card p-4 hover:border-[#2BA8A2] hover:bg-white/60 dark:hover:bg-muted/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs"
             >
               <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-xl bg-orange-100 dark:bg-orange-950/50 flex items-center justify-center flex-shrink-0 group-hover:bg-brandPrimary group-hover:text-white transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-white/60 dark:bg-muted flex items-center justify-center flex-shrink-0 text-[#2477A8] group-hover:bg-[#2BA8A2] group-hover:text-white transition-colors">
                   {generating === 'standard' ? (
-                    <Loader2 className="h-5 w-5 text-brandPrimary animate-spin" />
+                    <Loader2 className="h-5 w-5 text-[#2BA8A2] animate-spin" />
                   ) : (
-                    <FileCheck className="h-5 w-5 text-brandPrimary group-hover:text-white" />
+                    <FileCheck className="h-5 w-5 text-[#2BA8A2] group-hover:text-white stroke-[1.8]" />
                   )}
                 </div>
                 <div className="flex-1">
-                  <div className="font-semibold text-sm group-hover:text-brandPrimary transition-colors">{t('cv.standard')}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{t('cv.standardDesc')}</div>
+                  <div className="font-semibold text-sm text-[#155A82] dark:text-foreground group-hover:text-[#2BA8A2] transition-colors">{t('cv.standard')}</div>
+                  <div className="text-xs text-[#2477A8] dark:text-muted-foreground mt-1">{t('cv.standardDesc')}</div>
                 </div>
-                <Download className="h-4 w-4 text-muted-foreground group-hover:text-brandPrimary transition-colors mt-1" />
+                <Download className="h-4 w-4 text-[#2477A8] dark:text-muted-foreground group-hover:text-[#2BA8A2] transition-colors mt-1 stroke-[1.8]" />
               </div>
             </button>
 
@@ -221,21 +221,21 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
             <button
               onClick={() => handleDownload('ats')}
               disabled={generating !== null}
-              className="w-full text-left rounded-2xl border-2 border-gray-200/80 dark:border-border p-4 hover:border-brandPrimary hover:bg-orange-50/30 dark:hover:bg-orange-950/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs"
+              className="w-full text-left rounded-2xl border border-white/65 dark:border-border bg-white/40 dark:bg-card p-4 hover:border-[#2BA8A2] hover:bg-white/60 dark:hover:bg-muted/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs"
             >
               <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-xl bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-brandPrimary group-hover:text-white transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-white/60 dark:bg-muted flex items-center justify-center flex-shrink-0 text-[#2477A8] group-hover:bg-[#2BA8A2] group-hover:text-white transition-colors">
                   {generating === 'ats' ? (
-                    <Loader2 className="h-5 w-5 text-brandPrimary animate-spin" />
+                    <Loader2 className="h-5 w-5 text-[#2BA8A2] animate-spin" />
                   ) : (
-                    <ScanLine className="h-5 w-5 text-foreground group-hover:text-white" />
+                    <ScanLine className="h-5 w-5 text-[#155A82] dark:text-foreground group-hover:text-white stroke-[1.8]" />
                   )}
                 </div>
                 <div className="flex-1">
-                  <div className="font-semibold text-sm group-hover:text-brandPrimary transition-colors">{t('cv.ats')}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{t('cv.atsDesc')}</div>
+                  <div className="font-semibold text-sm text-[#155A82] dark:text-foreground group-hover:text-[#2BA8A2] transition-colors">{t('cv.ats')}</div>
+                  <div className="text-xs text-[#2477A8] dark:text-muted-foreground mt-1">{t('cv.atsDesc')}</div>
                 </div>
-                <Download className="h-4 w-4 text-muted-foreground group-hover:text-brandPrimary transition-colors mt-1" />
+                <Download className="h-4 w-4 text-[#2477A8] dark:text-muted-foreground group-hover:text-[#2BA8A2] transition-colors mt-1 stroke-[1.8]" />
               </div>
             </button>
           </div>

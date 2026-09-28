@@ -49,9 +49,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning data-scroll-behavior="smooth">
-      <body className={`${inter.variable} ${cairo.variable} font-sans bg-[#111315] text-[#F5F7F8]`} suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false} disableTransitionOnChange>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+      <body className={`${inter.variable} ${cairo.variable} font-sans min-h-screen antialiased`} suppressHydrationWarning>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <LanguageProvider>
             <ColorProvider>
               <AuthProvider>

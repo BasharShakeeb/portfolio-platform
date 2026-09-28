@@ -3,8 +3,82 @@
 @tailwind utilities;
 
 @layer base {
-  :root,
+  :root {
+    /* ==================================================
+       LIGHT MODE COLOR & GLASS SYSTEM (تعليمات.md)
+       Primary Sky Blue: #AADDFC
+       Light Sky Blue:   #B4E1FC
+       Soft Blue:        #C2E6FC
+       Very Light Glass: #CAEBFD
+       Highlight:        #DAF1FD
+       Blue Accent:      #84C9F8
+       Text:             #2477A8
+       Dark Text:        #155A82
+       Primary Teal:     #2BA8A2
+       ================================================== */
+    --light-bg: #AADDFC;
+    --light-bg-soft: #C2E6FC;
+    --light-bg-highlight: #DAF1FD;
+    --light-surface: rgba(255, 255, 255, 0.35);
+    --light-surface-card: rgba(255, 255, 255, 0.38);
+    --light-surface-strong: rgba(255, 255, 255, 0.55);
+    --light-surface-modal: rgba(255, 255, 255, 0.72);
+    --light-border: rgba(255, 255, 255, 0.60);
+    --light-border-soft: rgba(255, 255, 255, 0.55);
+    --light-border-input: rgba(255, 255, 255, 0.65);
+    --light-primary: #2BA8A2;
+    --light-blue: #84C9F8;
+    --light-text: #2477A8;
+    --light-text-dark: #155A82;
+
+    /* Tailwind HSL mappings for Light Mode */
+    --background: 203 93% 83%; /* #AADDFC */
+    --foreground: 202 72% 30%; /* #155A82 */
+    --card: 204 90% 98%;
+    --card-foreground: 202 72% 30%;
+    --popover: 204 90% 98%;
+    --popover-foreground: 202 72% 30%;
+    --primary: 177 59% 41%; /* #2BA8A2 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 203 80% 90%;
+    --secondary-foreground: 202 65% 40%;
+    --muted: 203 70% 92%;
+    --muted-foreground: 202 50% 40%;
+    --accent: 203 80% 92%;
+    --accent-foreground: 202 65% 40%;
+    --destructive: 0 84% 60%; /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 203 50% 82%;
+    --input: 203 50% 82%;
+    --ring: 204 90% 75%; /* #84C9F8 */
+    --chart-1: 177 59% 41%;
+    --chart-2: 204 90% 75%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 142 71% 45%;
+    --chart-5: 0 84% 60%;
+    --radius: 0.875rem;
+
+    /* Semantic tokens for Light Mode */
+    --surface-bg: #AADDFC;
+    --surface-primary: rgba(255, 255, 255, 0.38);
+    --surface-secondary: rgba(255, 255, 255, 0.35);
+    --surface-elevated: rgba(255, 255, 255, 0.55);
+    --surface-hover: rgba(255, 255, 255, 0.45);
+    --surface-border: rgba(255, 255, 255, 0.60);
+    --text-primary: #155A82;
+    --text-secondary: #2477A8;
+    --text-muted: #6FA7C8;
+    --accent-primary: #2BA8A2;
+    --accent-secondary: #84C9F8;
+    --color-danger: #EF4444;
+    --color-warning: #F59E0B;
+    --color-info: #84C9F8;
+  }
+
   .dark {
+    /* ==================================================
+       EXISTING DARK MODE TOKENS — PRESERVED 100% UNCHANGED
+       ================================================== */
     --background: 210 11% 7%; /* #111315 */
     --foreground: 200 17% 97%; /* #F5F7F8 */
     --card: 210 11% 11%; /* #191C1F */
@@ -31,7 +105,7 @@
     --chart-5: 0 84% 60%;
     --radius: 0.875rem;
 
-    /* Semantic hex tokens */
+    /* Semantic hex tokens for Dark Mode */
     --surface-bg: #111315;
     --surface-primary: #191C1F;
     --surface-secondary: #202428;
@@ -54,8 +128,14 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    min-height: 100vh;
+    color: var(--text-primary);
+    background: linear-gradient(135deg, #AADDFC 0%, #C2E6FC 50%, #DAF1FD 100%) fixed;
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .dark body {
+    background: #111315;
+    color: #F5F7F8;
   }
   html {
     scroll-behavior: smooth;
@@ -73,8 +153,19 @@
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: hsl(var(--muted-foreground) / 0.3); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.5); }
+::-webkit-scrollbar-thumb {
+  background: rgba(36, 119, 168, 0.25);
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(36, 119, 168, 0.45);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
 
 /* Line clamp */
 .line-clamp-2 {
@@ -103,64 +194,204 @@
   body { background: white !important; color: black !important; }
 }
 
-/* System Design Tokens utilities */
+/* ==================================================
+   REUSABLE GLASSMORPHISM UTILITIES (Light Mode sky-blue glass)
+   ================================================== */
+.glass-surface {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(36, 119, 168, 0.08);
+}
+.dark .glass-surface {
+  background: #191C1F;
+  border-color: #343A40;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.glass-nav {
+  background: rgba(170, 221, 252, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 8px 30px rgba(36, 119, 168, 0.08);
+}
+.dark .glass-nav {
+  background: rgba(25, 28, 31, 0.85);
+  border-color: #343A40;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.glass-sidebar {
+  background: rgba(255, 255, 255, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.dark .glass-sidebar {
+  background: #191C1F;
+  border-color: #343A40;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 1rem;
+  box-shadow: 0 8px 30px rgba(36, 119, 168, 0.08);
+}
+.dark .glass-card {
+  background: #191C1F;
+  border-color: #343A40;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.glass-modal {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 15px 50px rgba(36, 119, 168, 0.12);
+}
+.dark .glass-modal {
+  background: #191C1F;
+  border-color: #343A40;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  color: #155A82;
+}
+.glass-input::placeholder {
+  color: #6FA7C8;
+}
+.glass-input:focus {
+  border-color: #84C9F8;
+  box-shadow: 0 0 0 3px rgba(132, 201, 248, 0.18);
+}
+.dark .glass-input {
+  background: #202428;
+  border-color: #343A40;
+  color: #F5F7F8;
+}
+.dark .glass-input::placeholder {
+  color: #737A82;
+}
+.dark .glass-input:focus {
+  border-color: #10B981;
+  box-shadow: 0 0 0 1px #10B981;
+}
+
+/* ==================================================
+   PILL & CATEGORY NAVIGATION (Updated for sky-blue glass & dark mode)
+   ================================================== */
 .pill-container {
-  background-color: #FAF7F2;
-  border: 1px solid #ffedd5;
+  background-color: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-radius: 9999px;
+  box-shadow: 0 4px 20px rgba(36, 119, 168, 0.06);
 }
 .dark .pill-container {
-  background-color: hsl(224 20% 13%);
-  border-color: hsl(224 20% 20%);
+  background-color: rgba(32, 36, 40, 0.6);
+  border-color: #343A40;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
 .pill-button {
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  color: #374151;
+  background-color: rgba(255, 255, 255, 0.40);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  color: #2477A8;
   border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   transition: all 0.2s ease;
 }
 .pill-button:hover {
-  background-color: #f3f4f6;
+  background-color: rgba(255, 255, 255, 0.65);
+  color: #155A82;
 }
 .dark .pill-button {
-  background-color: hsl(224 25% 15%);
-  border-color: hsl(224 20% 22%);
-  color: hsl(220 20% 90%);
+  background-color: #202428;
+  border-color: #343A40;
+  color: #A7ADB4;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 .dark .pill-button:hover {
-  background-color: hsl(224 25% 19%);
+  background-color: #2B3035;
+  color: #F5F7F8;
 }
 
 .pill-button-active {
-  background-color: #a14000 !important;
-  border-color: #a14000 !important;
+  background-color: #2BA8A2 !important;
+  border-color: #2BA8A2 !important;
   color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(43, 168, 162, 0.3);
 }
 .pill-button-active:hover {
-  background-color: #873600 !important;
+  background-color: #259690 !important;
+}
+.dark .pill-button-active {
+  background-color: #10B981 !important;
+  border-color: #10B981 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+.dark .pill-button-active:hover {
+  background-color: #22C55E !important;
 }
 
+/* Badges */
 .badge-botanical {
-  background-color: #EAF7EE;
-  color: #1e6b47;
+  background-color: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.30);
+  color: #15803d;
   border-radius: 9999px;
 }
 .dark .badge-botanical {
-  background-color: rgba(30, 107, 71, 0.2);
+  background-color: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.3);
   color: #6ee7b7;
 }
 
 .badge-sale {
-  background-color: #F53D3D;
-  color: #ffffff;
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.30);
+  color: #dc2626;
   border-radius: 9999px;
+}
+.dark .badge-sale {
+  background-color: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
 }
 
 .badge-citrus {
-  background-color: #FFA114;
-  color: #ffffff;
+  background-color: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.30);
+  color: #d97706;
   border-radius: 9999px;
 }
-
+.dark .badge-citrus {
+  background-color: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}

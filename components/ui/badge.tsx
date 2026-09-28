@@ -9,22 +9,22 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
+          'border-transparent bg-[#2BA8A2] text-white hover:bg-[#259690] dark:bg-[#10B981] dark:text-white dark:hover:bg-[#22C55E]',
         secondary:
-          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
+          'border-white/60 bg-white/40 text-[#2477A8] dark:border-border dark:bg-secondary dark:text-secondary-foreground',
         destructive:
           'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-        outline: 'text-foreground',
+        outline: 'border-white/60 text-[#2477A8] dark:border-border dark:text-foreground',
         botanical:
-          'border-transparent bg-botanicalMint text-botanicalGreen hover:bg-botanicalMint/80 dark:bg-emerald-950/60 dark:text-emerald-400',
+          'border-emerald-500/30 bg-emerald-500/15 text-emerald-800 hover:bg-emerald-500/25 dark:border-emerald-500/30 dark:bg-emerald-950/60 dark:text-emerald-400',
         sale:
-          'border-transparent bg-saleCrimson text-white hover:bg-saleCrimson/90',
+          'border-rose-500/30 bg-rose-500/15 text-rose-700 hover:bg-rose-500/25 dark:border-rose-500/30 dark:bg-rose-950/60 dark:text-rose-400',
         citrus:
-          'border-transparent bg-citrusAmber text-white hover:bg-citrusAmber/90',
+          'border-amber-500/30 bg-amber-500/15 text-amber-800 hover:bg-amber-500/25 dark:border-amber-500/30 dark:bg-amber-950/60 dark:text-amber-400',
         brand:
-          'border-transparent bg-brandPrimary text-white hover:bg-brandPrimaryHover',
+          'border-transparent bg-[#2BA8A2] text-white hover:bg-[#259690] dark:bg-[#10B981] dark:hover:bg-[#22C55E]',
         pill:
-          'border-[#e5e7eb] bg-white text-[#374151] hover:bg-gray-100 dark:bg-card dark:border-border dark:text-foreground',
+          'border-white/65 bg-white/45 text-[#2477A8] hover:bg-white/65 dark:bg-card dark:border-border dark:text-foreground',
       },
     },
     defaultVariants: {

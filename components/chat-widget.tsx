@@ -108,19 +108,19 @@ export function ChatWidget() {
           onClick={() => setOpen(true)}
           variant="brand"
           size="icon"
-          className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 h-14 w-14 rounded-full shadow-xl hover:scale-110 transition-transform duration-300 ring-4 ring-orange-100 dark:ring-orange-950/40"
+          className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 h-14 w-14 rounded-full shadow-xl hover:scale-110 transition-transform duration-300 ring-4 ring-white/60 dark:ring-emerald-950/40"
         >
-          <MessageCircle className="h-6 w-6" />
+          <MessageCircle className="h-6 w-6 stroke-[1.8]" />
         </Button>
       )}
 
       {open && (
-        <div className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 w-84 max-w-[calc(100vw-2rem)] rounded-2xl border border-gray-200/80 dark:border-border bg-card shadow-2xl flex flex-col animate-in slide-in-from-bottom-4 duration-300 overflow-hidden">
+        <div className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 w-84 max-w-[calc(100vw-2rem)] rounded-2xl border border-white/65 dark:border-border bg-white/85 dark:bg-card shadow-[0_15px_50px_rgba(36,119,168,0.15)] dark:shadow-2xl backdrop-blur-[20px] dark:backdrop-blur-none flex flex-col animate-in slide-in-from-bottom-4 duration-300 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 bg-brandPrimary text-white">
+          <div className="flex items-center justify-between p-4 bg-[#2BA8A2] dark:bg-[#10B981] text-white">
             <div className="flex items-center gap-2.5">
               <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
-                <Bot className="h-4 w-4 text-white" />
+                <Bot className="h-4 w-4 text-white stroke-[1.8]" />
               </div>
               <div>
                 <span className="font-bold text-sm block leading-none">{t('chat.title')}</span>
@@ -133,20 +133,20 @@ export function ChatWidget() {
               className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
               onClick={() => setOpen(false)}
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4 stroke-[1.8]" />
             </Button>
           </div>
 
           {/* Messages */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 max-h-72 min-h-[160px] bg-pageCanvas/50 dark:bg-card">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 max-h-72 min-h-[160px] bg-white/20 dark:bg-card">
             {messages.map((msg, i) => (
               <div key={i} className={cn('flex', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
                 <div
                   className={cn(
                     'max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed',
                     msg.role === 'user'
-                      ? 'bg-brandPrimary text-white rounded-br-xs font-medium'
-                      : 'bg-white dark:bg-muted border border-gray-200/60 dark:border-border text-foreground rounded-bl-xs'
+                      ? 'bg-[#2BA8A2] dark:bg-[#10B981] text-white rounded-br-xs font-medium'
+                      : 'bg-white/70 dark:bg-muted border border-white/65 dark:border-border text-[#155A82] dark:text-foreground rounded-bl-xs'
                   )}
                 >
                   {msg.text}
@@ -155,11 +155,11 @@ export function ChatWidget() {
             ))}
             {sending && (
               <div className="flex justify-start">
-                <div className="bg-white dark:bg-muted border rounded-2xl px-3.5 py-2 text-sm shadow-2xs">
+                <div className="bg-white/70 dark:bg-muted border border-white/65 dark:border-border rounded-2xl px-3.5 py-2 text-sm shadow-2xs">
                   <span className="inline-flex gap-1.5 items-center">
-                    <span className="h-2 w-2 rounded-full bg-brandPrimary animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="h-2 w-2 rounded-full bg-brandPrimary animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="h-2 w-2 rounded-full bg-brandPrimary animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span className="h-2 w-2 rounded-full bg-[#2BA8A2] dark:bg-[#10B981] animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="h-2 w-2 rounded-full bg-[#2BA8A2] dark:bg-[#10B981] animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="h-2 w-2 rounded-full bg-[#2BA8A2] dark:bg-[#10B981] animate-bounce" style={{ animationDelay: '300ms' }} />
                   </span>
                 </div>
               </div>
@@ -167,13 +167,13 @@ export function ChatWidget() {
           </div>
 
           {/* Quick Prompts Chips */}
-          <div className="px-3 py-2 bg-pulpCream/70 dark:bg-muted/30 border-t border-orange-100 dark:border-border flex gap-1.5 overflow-x-auto no-scrollbar">
+          <div className="px-3 py-2 bg-white/40 dark:bg-muted/30 border-t border-white/55 dark:border-border flex gap-1.5 overflow-x-auto no-scrollbar">
             {quickPrompts.map((p, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handlePromptClick(p.query)}
-                className="whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium bg-white dark:bg-card border border-gray-200/80 dark:border-border text-[#374151] dark:text-foreground hover:border-brandPrimary hover:text-brandPrimary hover:bg-orange-50/50 transition-all shadow-2xs"
+                className="whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/60 dark:bg-card border border-white/65 dark:border-border text-[#2477A8] dark:text-foreground hover:border-[#2BA8A2] hover:text-[#2BA8A2] hover:bg-white/80 transition-all shadow-2xs"
               >
                 {p.label}
               </button>
@@ -181,7 +181,7 @@ export function ChatWidget() {
           </div>
 
           {/* Input */}
-          <div className="p-3 border-t bg-card flex gap-2">
+          <div className="p-3 border-t border-white/55 dark:border-border bg-white/40 dark:bg-card flex gap-2">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
