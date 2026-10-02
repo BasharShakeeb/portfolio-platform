@@ -8,6 +8,7 @@ import { VisualIdentityProvider } from '@/contexts/visual-identity-context';
 import { VisualIdentityIcons } from '@/components/visual-identity-icons';
 import { getVisualIdentityUrl, type VisualIdentityPaths } from '@/lib/visual-identity';
 import { safeTimeoutSignal } from '@/lib/utils';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const cairo = Cairo({ subsets: ['arabic', 'latin'], variable: '--font-cairo' });
@@ -81,6 +82,7 @@ export default function RootLayout({
             </LanguageProvider>
           </ThemeProvider>
         </ErrorBoundary>
+        <SpeedInsights />
       </body>
     </html>
   );
