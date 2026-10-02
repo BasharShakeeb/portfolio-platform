@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-[#2BA8A2] text-white hover:bg-[#259690] dark:bg-[#10B981] dark:hover:bg-[#22C55E] shadow-sm font-semibold',
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm font-semibold',
         destructive: 'bg-[#EF4444] text-white hover:bg-[#DC2626] shadow-sm font-medium',
-        outline: 'border border-white/65 bg-white/40 text-[#2477A8] hover:bg-white/65 hover:text-[#155A82] backdrop-blur-sm dark:border-[#343A40] dark:bg-[#191C1F] dark:text-[#F5F7F8] dark:hover:bg-[#25292D] dark:hover:text-[#FFFFFF] dark:backdrop-blur-none',
-        secondary: 'bg-white/40 text-[#2477A8] border border-white/65 hover:bg-white/65 hover:text-[#155A82] backdrop-blur-sm dark:bg-[#202428] dark:text-[#F5F7F8] dark:border-[#343A40] dark:hover:bg-[#2B3035] dark:hover:text-white dark:backdrop-blur-none',
-        ghost: 'text-[#2477A8] hover:bg-white/40 hover:text-[#155A82] dark:text-[#A7ADB4] dark:hover:bg-[#25292D] dark:hover:text-[#F5F7F8]',
-        link: 'text-[#2BA8A2] underline-offset-4 hover:underline hover:text-[#155A82] dark:text-[#10B981] dark:hover:text-[#22C55E]',
-        brand: 'bg-[#2BA8A2] text-white hover:bg-[#259690] dark:bg-[#10B981] dark:hover:bg-[#22C55E] shadow-sm font-semibold',
-        pill: 'rounded-xl bg-white/40 text-[#2477A8] border border-white/65 hover:bg-white/65 hover:text-[#155A82] shadow-xs backdrop-blur-sm dark:bg-[#202428] dark:text-[#A7ADB4] dark:border-[#343A40] dark:hover:bg-[#25292D] dark:hover:text-[#F5F7F8] dark:backdrop-blur-none',
-        pillActive: 'rounded-xl bg-[#2BA8A2] text-white hover:bg-[#259690] border border-[#2BA8A2] shadow-xs font-semibold dark:bg-[#10B981] dark:hover:bg-[#22C55E] dark:border-[#10B981]',
+        outline: 'border border-white/65 bg-white/40 text-[#2477A8] hover:bg-white/65 hover:text-primary backdrop-blur-sm dark:border-[#343A40] dark:bg-[#191C1F] dark:text-[#F5F7F8] dark:hover:bg-[#25292D] dark:hover:text-[#FFFFFF] dark:backdrop-blur-none',
+        secondary: 'bg-white/40 text-[#2477A8] border border-white/65 hover:bg-white/65 hover:text-primary backdrop-blur-sm dark:bg-[#202428] dark:text-[#F5F7F8] dark:border-[#343A40] dark:hover:bg-[#2B3035] dark:hover:text-white dark:backdrop-blur-none',
+        ghost: 'text-[#2477A8] hover:bg-white/40 hover:text-primary dark:text-[#A7ADB4] dark:hover:bg-[#25292D] dark:hover:text-[#F5F7F8]',
+        link: 'text-primary underline-offset-4 hover:underline hover:text-primary/80',
+        brand: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm font-semibold',
+        pill: 'rounded-xl bg-white/40 text-[#2477A8] border border-white/65 hover:bg-white/65 hover:text-primary shadow-xs backdrop-blur-sm dark:bg-[#202428] dark:text-[#A7ADB4] dark:border-[#343A40] dark:hover:bg-[#25292D] dark:hover:text-[#F5F7F8] dark:backdrop-blur-none',
+        pillActive: 'rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 border border-primary shadow-xs font-semibold',
       },
       size: {
         default: 'h-10 px-4 py-2',

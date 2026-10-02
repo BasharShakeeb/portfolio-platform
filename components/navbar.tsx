@@ -48,7 +48,7 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-lg text-[#155A82] dark:text-foreground transition-colors" dir="ltr">
           <VisualIdentityImage field="portfolio_logo_path" className="h-8 w-8 rounded-lg object-contain"
-            fallback={<span className="h-8 w-8 rounded-lg bg-[#2BA8A2] dark:bg-primary flex items-center justify-center text-white text-sm shadow-xs">P</span>} />
+            fallback={<span className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-white text-sm shadow-xs">P</span>} />
           <span className="hidden sm:inline">Portfolio</span>
         </Link>
 
@@ -61,7 +61,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="px-3.5 py-1.5 text-xs font-semibold text-[#2477A8] dark:text-muted-foreground hover:text-[#2BA8A2] dark:hover:text-foreground transition-all rounded-full hover:bg-white/60 dark:hover:bg-card hover:shadow-2xs"
+              className="px-3.5 py-1.5 text-xs font-semibold text-[#2477A8] dark:text-muted-foreground hover:text-primary dark:hover:text-foreground transition-all rounded-full hover:bg-white/60 dark:hover:bg-card hover:shadow-2xs"
             >
               {link.label}
             </Link>

@@ -66,7 +66,7 @@ type ColorContextType = {
 const ColorContext = createContext<ColorContextType | undefined>(undefined);
 
 export function ColorProvider({ children }: { children: React.ReactNode }) {
-  const [hue, setHueState] = useState<number>(160);
+  const [hue, setHueState] = useState<number>(177);
 
   useEffect(() => {
     try {
@@ -86,7 +86,7 @@ export function ColorProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const resetColor = useCallback(() => {
-    setHue(160);
+    setHue(177);
   }, [setHue]);
 
   useEffect(() => {
@@ -102,22 +102,11 @@ export function ColorProvider({ children }: { children: React.ReactNode }) {
 
 function applyHue(h: number) {
   const root = document.documentElement;
-  if (h === 160 || h === 24) {
-    // Premium Emerald Green Accent (#10B981)
-    root.style.setProperty('--primary', '160 84% 39%');
-    root.style.setProperty('--primary-foreground', '0 0% 100%');
-    root.style.setProperty('--ring', '160 84% 39%');
-    root.style.setProperty('--accent', '210 11% 19%');
-    root.style.setProperty('--accent-foreground', '160 84% 39%');
-    root.style.setProperty('--chart-1', '160 84% 39%');
-  } else {
-    root.style.setProperty('--primary', `${h} 70% 50%`);
-    root.style.setProperty('--primary-foreground', '0 0% 100%');
-    root.style.setProperty('--ring', `${h} 70% 50%`);
-    root.style.setProperty('--accent', '210 11% 19%');
-    root.style.setProperty('--accent-foreground', `${h} 70% 50%`);
-    root.style.setProperty('--chart-1', `${h} 70% 50%`);
-  }
+  // Apply vibrant primary accent hue
+  root.style.setProperty('--primary', `${h} 65% 42%`);
+  root.style.setProperty('--primary-foreground', '0 0% 100%');
+  root.style.setProperty('--ring', `${h} 65% 42%`);
+  root.style.setProperty('--chart-1', `${h} 65% 42%`);
   root.style.setProperty('--chart-2', `${(h + 120) % 360} 60% 45%`);
   root.style.setProperty('--chart-3', `${(h + 240) % 360} 60% 55%`);
 }

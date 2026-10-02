@@ -225,7 +225,7 @@ export function PortfolioSections() {
               {items.length > 0 && (
                 <div className="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-xl mx-auto p-1.5 rounded-full bg-white/35 dark:bg-muted/40 border border-white/60 dark:border-border shadow-[0_8px_30px_rgba(36,119,168,0.08)] backdrop-blur-md">
                   <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/60 dark:bg-card text-[#155A82] dark:text-foreground border border-white/65 dark:border-border shadow-xs flex items-center gap-1.5">
-                    <FolderGit2 className="h-3.5 w-3.5 text-[#2BA8A2]" />
+                    <FolderGit2 className="h-3.5 w-3.5 text-primary" />
                     {items.filter(i => i.category === 'projects').length} {t('section.projects')}
                   </span>
                   <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/60 dark:bg-card text-[#155A82] dark:text-foreground border border-white/65 dark:border-border shadow-xs flex items-center gap-1.5">
@@ -458,7 +458,7 @@ export function PortfolioSections() {
                       setSelectedItem(item);
                       setDetailsOpen(true);
                     }}
-                    className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer border border-white/60 dark:border-border rounded-2xl bg-white/38 dark:bg-card hover:border-[#2BA8A2]/50 dark:hover:border-primary/40 backdrop-blur-[14px] dark:backdrop-blur-none"
+                    className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer border border-white/60 dark:border-border rounded-2xl bg-white/38 dark:bg-card hover:border-primary/50 dark:hover:border-primary/40 backdrop-blur-[14px] dark:backdrop-blur-none"
                   >
                     {item.image_url && (
                       <div className="aspect-video overflow-hidden bg-white/10 dark:bg-muted relative">
@@ -481,7 +481,7 @@ export function PortfolioSections() {
                           <Badge variant={getCategoryVariant(item.category) as any} className="mb-2 text-xs uppercase tracking-wide">
                             {t(`section.${item.category}` as any) || item.category}
                           </Badge>
-                          <CardTitle className="text-lg text-[#155A82] group-hover:text-[#2BA8A2] dark:text-card-foreground dark:group-hover:text-primary transition-colors leading-snug">
+                          <CardTitle className="text-lg text-[#155A82] group-hover:text-primary dark:text-card-foreground dark:group-hover:text-primary transition-colors leading-snug">
                             {item.title}
                           </CardTitle>
                         </div>
@@ -491,7 +491,7 @@ export function PortfolioSections() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="text-[#2477A8] hover:text-[#2BA8A2] dark:text-muted-foreground dark:hover:text-primary p-1 rounded-full hover:bg-white/40 dark:hover:bg-muted transition-colors"
+                            className="text-[#2477A8] hover:text-primary dark:text-muted-foreground dark:hover:text-primary p-1 rounded-full hover:bg-white/40 dark:hover:bg-muted transition-colors"
                             title={lang === 'ar' ? 'رابط خارجي' : 'External link'}
                           >
                             <ExternalLink className="h-4 w-4 stroke-[1.8]" />

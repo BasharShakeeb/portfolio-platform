@@ -9,7 +9,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          'border-transparent bg-[#2BA8A2] text-white hover:bg-[#259690] dark:bg-[#10B981] dark:text-white dark:hover:bg-[#22C55E]',
+          'border-transparent bg-primary text-primary-foreground hover:bg-primary/90',
         secondary:
           'border-white/60 bg-white/40 text-[#2477A8] dark:border-border dark:bg-secondary dark:text-secondary-foreground',
         destructive:
@@ -22,7 +22,7 @@ const badgeVariants = cva(
         citrus:
           'border-amber-500/30 bg-amber-500/15 text-amber-800 hover:bg-amber-500/25 dark:border-amber-500/30 dark:bg-amber-950/60 dark:text-amber-400',
         brand:
-          'border-transparent bg-[#2BA8A2] text-white hover:bg-[#259690] dark:bg-[#10B981] dark:hover:bg-[#22C55E]',
+          'border-transparent bg-primary text-primary-foreground hover:bg-primary/90',
         pill:
           'border-white/65 bg-white/45 text-[#2477A8] hover:bg-white/65 dark:bg-card dark:border-border dark:text-foreground',
       },
