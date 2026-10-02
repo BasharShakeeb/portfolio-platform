@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLanguage } from '@/contexts/app-context';
 import { supabase, type Item, type Profile, type Message, type ContactSettings, getOwnerUserId } from '@/lib/supabase';
 import { monthNames } from '@/lib/i18n';
-import { Search, Calendar, Tag, ExternalLink, ArrowRight, Send, Mail, MapPin, Phone, Github, Linkedin, Twitter, MessageCircle, Eye, Sparkles, Award, FolderGit2, GraduationCap, BookOpen, Layers } from 'lucide-react';
+import { Search, Calendar, Tag, ExternalLink, ArrowRight, Send, Mail, MapPin, Phone, Github, Linkedin, Twitter, Instagram, Youtube, Facebook, Globe, MessageCircle, Eye, Sparkles, Award, FolderGit2, GraduationCap, BookOpen, Layers } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -160,10 +160,19 @@ export function PortfolioSections() {
     return parts.join(' - ');
   };
 
-  const socialIcons: Record<string, typeof Github> = {
-    github: Github,
-    linkedin: Linkedin,
-    twitter: Twitter,
+  const socialPlatformMap: Record<string, { name: string; icon: typeof Github }> = {
+    github: { name: 'GitHub', icon: Github },
+    linkedin: { name: 'LinkedIn', icon: Linkedin },
+    twitter: { name: 'Twitter / X', icon: Twitter },
+    x: { name: 'Twitter / X', icon: Twitter },
+    instagram: { name: 'Instagram', icon: Instagram },
+    youtube: { name: 'YouTube', icon: Youtube },
+    facebook: { name: 'Facebook', icon: Facebook },
+    telegram: { name: 'Telegram', icon: Send },
+    whatsapp: { name: 'WhatsApp', icon: MessageCircle },
+    website: { name: 'Website', icon: Globe },
+    web: { name: 'Website', icon: Globe },
+    portfolio: { name: 'Portfolio', icon: Globe },
   };
 
   return (
@@ -225,7 +234,7 @@ export function PortfolioSections() {
               {items.length > 0 && (
                 <div className="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-xl mx-auto p-1.5 rounded-full bg-white/35 dark:bg-muted/40 border border-white/60 dark:border-border shadow-[0_8px_30px_rgba(36,119,168,0.08)] backdrop-blur-md">
                   <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/60 dark:bg-card text-[#155A82] dark:text-foreground border border-white/65 dark:border-border shadow-xs flex items-center gap-1.5">
-                    <FolderGit2 className="h-3.5 w-3.5 text-primary" />
+                    <FolderGit2 className="h-3.5 w-3.5 text-[#2BA8A2]" />
                     {items.filter(i => i.category === 'projects').length} {t('section.projects')}
                   </span>
                   <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/60 dark:bg-card text-[#155A82] dark:text-foreground border border-white/65 dark:border-border shadow-xs flex items-center gap-1.5">
@@ -245,13 +254,23 @@ export function PortfolioSections() {
 
               {/* Social links */}
               {profile?.social_links && Object.keys(profile.social_links).length > 0 && (
-                <div className="flex gap-3 justify-center mt-6">
-                  {Object.entries(profile.social_links).map(([key, url]) => {
-                    const Icon = socialIcons[key.toLowerCase()] || ExternalLink;
+                <div className="flex flex-wrap gap-2.5 justify-center mt-6">
+                  {Object.entries(profile.social_links).map(([key, rawUrl]) => {
+                    const cleanKey = key.trim().toLowerCase();
+                    const platform = socialPlatformMap[cleanKey];
+                    const displayName = platform ? platform.name : (key.charAt(0).toUpperCase() + key.slice(1));
+                    const Icon = platform ? platform.icon : ExternalLink;
+
+                    let url = (rawUrl || '').trim();
+                    if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('mailto:') && !url.startsWith('tel:')) {
+                      url = `https://${url}`;
+                    }
+
                     return (
                       <a key={key} href={url} target="_blank" rel="noopener noreferrer">
-                        <Button variant="pill" size="icon" className="h-10 w-10 hover:border-brandPrimary hover:text-brandPrimary transition-all">
-                          <Icon className="h-4 w-4" />
+                        <Button variant="pill" size="pill" className="gap-2 text-xs font-medium hover:border-primary hover:text-primary transition-all shadow-xs">
+                          <Icon className="h-3.5 w-3.5 text-primary" />
+                          <span>{displayName}</span>
                         </Button>
                       </a>
                     );
@@ -458,7 +477,7 @@ export function PortfolioSections() {
                       setSelectedItem(item);
                       setDetailsOpen(true);
                     }}
-                    className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer border border-white/60 dark:border-border rounded-2xl bg-white/38 dark:bg-card hover:border-primary/50 dark:hover:border-primary/40 backdrop-blur-[14px] dark:backdrop-blur-none"
+                    className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer border border-white/60 dark:border-border rounded-2xl bg-white/38 dark:bg-card hover:border-[#2BA8A2]/50 dark:hover:border-primary/40 backdrop-blur-[14px] dark:backdrop-blur-none"
                   >
                     {item.image_url && (
                       <div className="aspect-video overflow-hidden bg-white/10 dark:bg-muted relative">
@@ -481,7 +500,7 @@ export function PortfolioSections() {
                           <Badge variant={getCategoryVariant(item.category) as any} className="mb-2 text-xs uppercase tracking-wide">
                             {t(`section.${item.category}` as any) || item.category}
                           </Badge>
-                          <CardTitle className="text-lg text-[#155A82] group-hover:text-primary dark:text-card-foreground dark:group-hover:text-primary transition-colors leading-snug">
+                          <CardTitle className="text-lg text-[#155A82] group-hover:text-[#2BA8A2] dark:text-card-foreground dark:group-hover:text-primary transition-colors leading-snug">
                             {item.title}
                           </CardTitle>
                         </div>
@@ -491,7 +510,7 @@ export function PortfolioSections() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="text-[#2477A8] hover:text-primary dark:text-muted-foreground dark:hover:text-primary p-1 rounded-full hover:bg-white/40 dark:hover:bg-muted transition-colors"
+                            className="text-[#2477A8] hover:text-[#2BA8A2] dark:text-muted-foreground dark:hover:text-primary p-1 rounded-full hover:bg-white/40 dark:hover:bg-muted transition-colors"
                             title={lang === 'ar' ? 'رابط خارجي' : 'External link'}
                           >
                             <ExternalLink className="h-4 w-4 stroke-[1.8]" />

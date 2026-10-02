@@ -9,6 +9,7 @@ import {
   User, Eye, EyeOff, KeyRound, Upload, Link as LinkIcon,
   ImageIcon, FolderOpen, Globe, X, Terminal, Wifi, WifiOff,
   Send, MessageSquare, Phone, Github, Linkedin, Bug, Activity,
+  Instagram, Youtube, Facebook, Twitter, MessageCircle, ExternalLink,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,6 +37,18 @@ export function SettingsManager({ section = 'profile' }: { section?: SettingsSec
     </div>
   );
 }
+
+const SUGGESTED_PLATFORMS = [
+  { id: 'linkedin', label: 'LinkedIn', icon: Linkedin, placeholder: 'https://linkedin.com/in/' },
+  { id: 'github', label: 'GitHub', icon: Github, placeholder: 'https://github.com/' },
+  { id: 'twitter', label: 'Twitter / X', icon: Twitter, placeholder: 'https://x.com/' },
+  { id: 'instagram', label: 'Instagram', icon: Instagram, placeholder: 'https://instagram.com/' },
+  { id: 'youtube', label: 'YouTube', icon: Youtube, placeholder: 'https://youtube.com/@' },
+  { id: 'facebook', label: 'Facebook', icon: Facebook, placeholder: 'https://facebook.com/' },
+  { id: 'telegram', label: 'Telegram', icon: Send, placeholder: 'https://t.me/' },
+  { id: 'whatsapp', label: 'WhatsApp', icon: MessageCircle, placeholder: 'https://wa.me/' },
+  { id: 'website', label: 'Website', icon: Globe, placeholder: 'https://' },
+] as const;
 
 // ===================== Profile Section =====================
 function ProfileSection() {
@@ -129,8 +142,19 @@ function ProfileSection() {
   };
 
   const addSocialLink = () => {
-    if (!newSocialKey.trim()) return;
-    setSocialLinks({ ...socialLinks, [newSocialKey.trim().toLowerCase()]: newSocialValue });
+    if (!newSocialKey.trim()) {
+      toast.error(isAr ? 'يرجى اختيار أو كتابة المنصة' : 'Please select or enter a platform');
+      return;
+    }
+    let url = newSocialValue.trim();
+    if (!url) {
+      toast.error(isAr ? 'يرجى إدخال الرابط' : 'Please enter the URL');
+      return;
+    }
+    if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('mailto:') && !url.startsWith('tel:')) {
+      url = `https://${url}`;
+    }
+    setSocialLinks({ ...socialLinks, [newSocialKey.trim().toLowerCase()]: url });
     setNewSocialKey('');
     setNewSocialValue('');
   };
@@ -187,52 +211,100 @@ function ProfileSection() {
           <Separator />
 
           <div className="space-y-3">
-            <Label className="flex items-center gap-2">
-              <LinkIcon className="h-4 w-4" />
-              {t('admin.socialLinks')}
-            </Label>
-            {Object.keys(socialLinks).length === 0 && (
-              <p className="text-sm text-muted-foreground italic">{t('admin.noSocialLinks')}</p>
-            )}
-            <div className="space-y-2">
-              {Object.entries(socialLinks).map(([key, val]) => (
-                <div key={key} className="flex gap-2 items-center group">
-                  <div className="w-28 px-3 py-2 rounded-md bg-muted text-sm font-medium capitalize flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-primary/60" />
-                    {key}
-                  </div>
-                  <Input
-                    value={val}
-                    onChange={(e) => setSocialLinks({ ...socialLinks, [key]: e.target.value })}
-                    className="flex-1"
-                  />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeSocialLink(key)}
-                    className="text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
+            <div className="flex items-center justify-between">
+              <Label className="flex items-center gap-2 text-base font-semibold">
+                <LinkIcon className="h-4 w-4 text-primary" />
+                {t('admin.socialLinks')}
+              </Label>
+              <span className="text-xs text-muted-foreground">
+                {isAr ? 'اختر منصة مقترحة أو اكتب اسماً مخصصاً' : 'Choose a suggested platform or enter custom name'}
+              </span>
             </div>
+
+            {/* Quick suggested platforms */}
+            <div className="flex flex-wrap items-center gap-1.5 p-2.5 rounded-xl bg-muted/40 border border-border/60">
+              <span className="text-xs font-medium text-muted-foreground mr-1">
+                {isAr ? 'مقترحات:' : 'Suggestions:'}
+              </span>
+              {SUGGESTED_PLATFORMS.map((p) => {
+                const PIcon = p.icon;
+                const isSelected = newSocialKey.toLowerCase() === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => {
+                      setNewSocialKey(p.id);
+                      if (!newSocialValue || newSocialValue.startsWith('https://')) {
+                        setNewSocialValue(p.placeholder);
+                      }
+                    }}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
+                      isSelected
+                        ? 'bg-primary text-primary-foreground border-primary shadow-xs'
+                        : 'bg-background hover:bg-muted text-foreground border-border hover:border-primary/40'
+                    )}
+                  >
+                    <PIcon className="h-3 w-3" />
+                    <span>{p.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {Object.keys(socialLinks).length === 0 && (
+              <p className="text-sm text-muted-foreground italic py-1">{t('admin.noSocialLinks')}</p>
+            )}
+
+            <div className="space-y-2">
+              {Object.entries(socialLinks).map(([key, val]) => {
+                const platform = SUGGESTED_PLATFORMS.find(p => p.id === key.toLowerCase());
+                const Icon = platform ? platform.icon : ExternalLink;
+                const label = platform ? platform.label : (key.charAt(0).toUpperCase() + key.slice(1));
+                return (
+                  <div key={key} className="flex gap-2 items-center group">
+                    <div className="w-36 px-3 py-2 rounded-lg bg-muted text-sm font-medium flex items-center gap-2 shrink-0 border border-border/60">
+                      <Icon className="h-4 w-4 text-primary shrink-0" />
+                      <span className="truncate">{label}</span>
+                    </div>
+                    <Input
+                      value={val}
+                      onChange={(e) => setSocialLinks({ ...socialLinks, [key]: e.target.value })}
+                      className="flex-1 font-mono text-xs"
+                      dir="ltr"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeSocialLink(key)}
+                      className="text-destructive hover:text-destructive shrink-0"
+                      title={isAr ? 'حذف' : 'Delete'}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t">
               <Input
                 value={newSocialKey}
                 onChange={(e) => setNewSocialKey(e.target.value)}
-                placeholder={t('admin.socialPlatform')}
-                className="w-full sm:w-32"
+                placeholder={isAr ? 'المنصة (مثال: GitHub)' : 'Platform'}
+                className="w-full sm:w-36"
               />
               <Input
                 value={newSocialValue}
                 onChange={(e) => setNewSocialValue(e.target.value)}
-                placeholder={t('admin.socialUrl')}
+                placeholder={isAr ? 'الرابط (مثال: https://...)' : 'URL (e.g. https://...)'}
                 className="flex-1"
+                dir="ltr"
               />
-              <Button variant="outline" onClick={addSocialLink} className="gap-1.5">
+              <Button variant="outline" onClick={addSocialLink} className="gap-1.5 shrink-0">
                 <Plus className="h-4 w-4" />
-                {t('admin.addSocialLink')}
+                {isAr ? 'إضافة رابط' : 'Add Link'}
               </Button>
             </div>
           </div>
@@ -575,15 +647,17 @@ function ContactChatSection() {
         </CardHeader>
         <CardContent className="space-y-5 pt-6">
           {/* Phone / WhatsApp */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="phone" className="flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                {t('admin.phone')}
+          {/* Phone / WhatsApp */}
+          <div className="space-y-2 p-3.5 rounded-2xl bg-white/40 dark:bg-muted/30 border border-white/65 dark:border-border transition-all shadow-2xs">
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="phone" className="flex items-center gap-2 text-sm font-semibold">
+                <Phone className="h-4 w-4 text-primary shrink-0" />
+                <span>{t('admin.phone')}</span>
               </Label>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">{t('admin.phoneVisible')}</span>
+              <div className="flex items-center gap-2.5 shrink-0">
+                <span className="text-xs text-muted-foreground select-none">{t('admin.phoneVisible')}</span>
                 <Switch
+                  id="phone-visible"
                   checked={contact?.phone_visible || false}
                   onCheckedChange={(v) => setContact({ ...contact!, phone_visible: v })}
                 />
@@ -594,19 +668,22 @@ function ContactChatSection() {
               value={contact?.phone || ''}
               onChange={(e) => setContact({ ...contact!, phone: e.target.value })}
               placeholder="+1234567890"
+              className="bg-white/70 dark:bg-card border-white/80 dark:border-border h-10 text-sm"
+              dir="ltr"
             />
           </div>
 
           {/* Email */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="contactEmail" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                {t('admin.emailAddr')}
+          <div className="space-y-2 p-3.5 rounded-2xl bg-white/40 dark:bg-muted/30 border border-white/65 dark:border-border transition-all shadow-2xs">
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="contactEmail" className="flex items-center gap-2 text-sm font-semibold">
+                <Mail className="h-4 w-4 text-primary shrink-0" />
+                <span>{t('admin.emailAddr')}</span>
               </Label>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">{t('admin.emailVisible')}</span>
+              <div className="flex items-center gap-2.5 shrink-0">
+                <span className="text-xs text-muted-foreground select-none">{t('admin.emailVisible')}</span>
                 <Switch
+                  id="email-visible"
                   checked={contact?.email_visible || false}
                   onCheckedChange={(v) => setContact({ ...contact!, email_visible: v })}
                 />
@@ -618,19 +695,22 @@ function ContactChatSection() {
               value={contact?.email || ''}
               onChange={(e) => setContact({ ...contact!, email: e.target.value })}
               placeholder="contact@example.com"
+              className="bg-white/70 dark:bg-card border-white/80 dark:border-border h-10 text-sm"
+              dir="ltr"
             />
           </div>
 
           {/* GitHub */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="github" className="flex items-center gap-2">
-                <Github className="h-4 w-4" />
-                {t('admin.github')}
+          <div className="space-y-2 p-3.5 rounded-2xl bg-white/40 dark:bg-muted/30 border border-white/65 dark:border-border transition-all shadow-2xs">
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="github" className="flex items-center gap-2 text-sm font-semibold">
+                <Github className="h-4 w-4 text-primary shrink-0" />
+                <span>{t('admin.github')}</span>
               </Label>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">{t('admin.githubVisible')}</span>
+              <div className="flex items-center gap-2.5 shrink-0">
+                <span className="text-xs text-muted-foreground select-none">{t('admin.githubVisible')}</span>
                 <Switch
+                  id="github-visible"
                   checked={contact?.github_visible || false}
                   onCheckedChange={(v) => setContact({ ...contact!, github_visible: v })}
                 />
@@ -641,19 +721,22 @@ function ContactChatSection() {
               value={contact?.github || ''}
               onChange={(e) => setContact({ ...contact!, github: e.target.value })}
               placeholder="https://github.com/username"
+              className="bg-white/70 dark:bg-card border-white/80 dark:border-border h-10 text-sm"
+              dir="ltr"
             />
           </div>
 
           {/* LinkedIn */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="linkedin" className="flex items-center gap-2">
-                <Linkedin className="h-4 w-4" />
-                {t('admin.linkedin')}
+          <div className="space-y-2 p-3.5 rounded-2xl bg-white/40 dark:bg-muted/30 border border-white/65 dark:border-border transition-all shadow-2xs">
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="linkedin" className="flex items-center gap-2 text-sm font-semibold">
+                <Linkedin className="h-4 w-4 text-primary shrink-0" />
+                <span>{t('admin.linkedin')}</span>
               </Label>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">{t('admin.linkedinVisible')}</span>
+              <div className="flex items-center gap-2.5 shrink-0">
+                <span className="text-xs text-muted-foreground select-none">{t('admin.linkedinVisible')}</span>
                 <Switch
+                  id="linkedin-visible"
                   checked={contact?.linkedin_visible || false}
                   onCheckedChange={(v) => setContact({ ...contact!, linkedin_visible: v })}
                 />
@@ -664,6 +747,8 @@ function ContactChatSection() {
               value={contact?.linkedin || ''}
               onChange={(e) => setContact({ ...contact!, linkedin: e.target.value })}
               placeholder="https://linkedin.com/in/username"
+              className="bg-white/70 dark:bg-card border-white/80 dark:border-border h-10 text-sm"
+              dir="ltr"
             />
           </div>
 
