@@ -207,9 +207,10 @@ export function PortfolioSections() {
                   </div>
                 </div>
               )}
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[#155A82] to-[#2477A8] dark:from-foreground dark:to-foreground/60 bg-clip-text text-transparent">
+               <h1 className="text-4xl md:text-6xl font-bold mb-4 text-primary">
                 {profile?.site_name || 'My Portfolio'}
               </h1>
+
               {profile?.bio && (
                 <p className="text-lg text-[#2477A8] dark:text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed font-normal">
                   {profile.bio}
