@@ -1093,7 +1093,11 @@ function AdvancedSection() {
 
   const handleClearLogs = () => {
     setLogs([]);
-    localStorage.removeItem('portfolio-dev-logs');
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('portfolio-dev-logs');
+      }
+    } catch {}
   };
 
   const handleBackup = async () => {

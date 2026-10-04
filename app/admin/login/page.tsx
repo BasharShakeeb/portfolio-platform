@@ -25,15 +25,23 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     setSubmitting(true);
 
-    const { error } = await signIn(email, password);
-    setSubmitting(false);
-    if (error) {
-      toast.error(error);
-    } else {
-      toast.success(t('admin.dashboard'));
-      router.push('/admin');
+    try {
+      const cleanEmail = email.trim().toLowerCase();
+      const { error } = await signIn(cleanEmail, password);
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success(t('admin.dashboard'));
+        router.push('/admin');
+      }
+    } catch (err: any) {
+      console.error('Login submit error:', err);
+      toast.error(err?.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -60,6 +68,10 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  inputMode="email"
                   className="ltr:pl-10 rtl:pr-10"
                   placeholder="admin@example.com"
                 />
@@ -75,6 +87,9 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
                   className="ltr:pl-10 rtl:pr-10 pr-10"
                   placeholder="••••••••"
                 />

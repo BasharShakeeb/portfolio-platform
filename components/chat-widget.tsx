@@ -105,10 +105,11 @@ export function ChatWidget() {
     <>
       {!open && (
         <Button
+          type="button"
           onClick={() => setOpen(true)}
           variant="brand"
           size="icon"
-          className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 h-14 w-14 rounded-full shadow-xl hover:scale-110 transition-transform duration-300 ring-4 ring-white/60 dark:ring-emerald-950/40"
+          className="fixed bottom-6 ltr:right-6 rtl:left-6 z-50 h-14 w-14 rounded-full shadow-xl hover:scale-110 transition-transform duration-300 ring-4 ring-white/60 dark:ring-emerald-950/40 cursor-pointer touch-manipulation"
         >
           <MessageCircle className="h-6 w-6 stroke-[1.8]" />
         </Button>
@@ -128,9 +129,10 @@ export function ChatWidget() {
               </div>
             </div>
             <Button
+              type="button"
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
+              className="h-8 w-8 text-white hover:bg-white/20 rounded-full cursor-pointer"
               onClick={() => setOpen(false)}
             >
               <X className="h-4 w-4 stroke-[1.8]" />
@@ -173,7 +175,7 @@ export function ChatWidget() {
                 key={idx}
                 type="button"
                 onClick={() => handlePromptClick(p.query)}
-                className="whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/60 dark:bg-card border border-white/65 dark:border-border text-[#2477A8] dark:text-foreground hover:border-[#2BA8A2] hover:text-[#2BA8A2] hover:bg-white/80 transition-all shadow-2xs"
+                className="whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/60 dark:bg-card border border-white/65 dark:border-border text-[#2477A8] dark:text-foreground hover:border-[#2BA8A2] hover:text-[#2BA8A2] hover:bg-white/80 transition-all shadow-2xs cursor-pointer touch-manipulation"
               >
                 {p.label}
               </button>
@@ -190,11 +192,12 @@ export function ChatWidget() {
               className="flex-1 rounded-full text-xs"
             />
             <Button
+              type="button"
               variant="brand"
               size="icon"
               onClick={handleSend}
               disabled={sending}
-              className="rounded-full h-9 w-9 shrink-0"
+              className="rounded-full h-9 w-9 shrink-0 cursor-pointer"
             >
               <Send className="h-4 w-4" />
             </Button>

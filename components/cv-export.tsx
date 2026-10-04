@@ -146,10 +146,39 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
     setGenerating(format);
     try {
       const html = format === 'standard' ? generateStandardHTML() : generateATSHTML();
+      const isMobileSafari = typeof navigator !== 'undefined' && (/iPhone|iPad|iPod/i.test(navigator.userAgent) || (/Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent)));
+
+      if (isMobileSafari) {
+        const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = `${profile?.site_name || 'Portfolio'}-CV-${format}.html`;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+        toast.success(t('cv.download'));
+        setGenerating(null);
+        setModalOpen(false);
+        return;
+      }
+
       const printWindow = window.open('', '_blank');
       if (!printWindow) {
-        toast.error(t('cv.error'));
+        const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = `${profile?.site_name || 'Portfolio'}-CV-${format}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+        toast.success(t('cv.download'));
         setGenerating(null);
+        setModalOpen(false);
         return;
       }
       printWindow.document.write(html);
@@ -164,6 +193,7 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
         setGenerating(null);
       }, 500);
     } catch (err) {
+      console.error('CV export error:', err);
       toast.error(t('cv.error'));
       setGenerating(null);
     }
@@ -172,11 +202,12 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
   return (
     <>
       <Button
+        type="button"
         variant="pill"
         size="lg"
         onClick={() => setModalOpen(true)}
         disabled={!profile && items.length === 0}
-        className="rounded-full shadow-xs font-medium gap-2"
+        className="rounded-full shadow-xs font-medium gap-2 cursor-pointer"
       >
         <FileText className="h-4 w-4" />
         {t('cv.download')}
@@ -197,9 +228,10 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
           <div className="space-y-3 mt-4">
             {/* Standard PDF */}
             <button
+              type="button"
               onClick={() => handleDownload('standard')}
               disabled={generating !== null}
-              className="w-full text-left rounded-2xl border border-white/65 dark:border-border bg-white/40 dark:bg-card p-4 hover:border-primary hover:bg-white/60 dark:hover:bg-muted/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs"
+              className="w-full text-left rounded-2xl border border-white/65 dark:border-border bg-white/40 dark:bg-card p-4 hover:border-primary hover:bg-white/60 dark:hover:bg-muted/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs cursor-pointer"
             >
               <div className="flex items-start gap-3">
                 <div className="h-10 w-10 rounded-xl bg-white/60 dark:bg-muted flex items-center justify-center flex-shrink-0 text-[#2477A8] group-hover:bg-primary group-hover:text-white transition-colors">
@@ -219,9 +251,10 @@ export function CVExport({ profile, items }: { profile: Profile | null; items: I
 
             {/* ATS-Friendly */}
             <button
+              type="button"
               onClick={() => handleDownload('ats')}
               disabled={generating !== null}
-              className="w-full text-left rounded-2xl border border-white/65 dark:border-border bg-white/40 dark:bg-card p-4 hover:border-primary hover:bg-white/60 dark:hover:bg-muted/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs"
+              className="w-full text-left rounded-2xl border border-white/65 dark:border-border bg-white/40 dark:bg-card p-4 hover:border-primary hover:bg-white/60 dark:hover:bg-muted/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xs cursor-pointer"
             >
               <div className="flex items-start gap-3">
                 <div className="h-10 w-10 rounded-xl bg-white/60 dark:bg-muted flex items-center justify-center flex-shrink-0 text-[#2477A8] group-hover:bg-primary group-hover:text-white transition-colors">

@@ -252,14 +252,13 @@ export default function AdminDashboard() {
       </header>
 
       {/* Mobile Drawer Backdrop */}
-      <div
-        className={cn(
-          'fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden',
-          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        )}
-        onClick={() => setMobileOpen(false)}
-        aria-hidden="true"
-      />
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden pointer-events-auto"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Mobile Drawer */}
       <aside
@@ -272,11 +271,10 @@ export default function AdminDashboard() {
           'bg-[rgba(235,246,255,0.96)] dark:bg-[#191C1F] backdrop-blur-[20px] border-white/55 dark:border-[#343A40]',
           dir === 'rtl' ? 'right-0 border-l' : 'left-0 border-r',
           mobileOpen
-            ? 'translate-x-0'
+            ? 'translate-x-0 pointer-events-auto'
             : dir === 'rtl'
-            ? 'translate-x-full'
-            : '-translate-x-full',
-          !mobileOpen && 'pointer-events-none'
+            ? 'translate-x-full pointer-events-none invisible'
+            : '-translate-x-full pointer-events-none invisible'
         )}
       >
         {/* Drawer Header */}

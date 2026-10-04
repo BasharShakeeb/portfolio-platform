@@ -47,10 +47,11 @@ export function ColorPicker() {
           <div className="grid grid-cols-4 gap-2">
             {presetHues.map((preset) => (
               <button
+                type="button"
                 key={preset.hue}
                 onClick={() => setHue(preset.hue)}
                 className={cn(
-                  'h-10 w-full rounded-lg border-2 transition-all hover:scale-105',
+                  'h-10 w-full rounded-lg border-2 transition-all hover:scale-105 cursor-pointer touch-manipulation',
                   hue === preset.hue ? 'border-foreground ring-2 ring-ring ring-offset-1' : 'border-transparent'
                 )}
                 style={{ backgroundColor: `hsl(${preset.hue} 70% 50%)` }}

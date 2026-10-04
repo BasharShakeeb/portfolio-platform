@@ -23,7 +23,7 @@ export function Navbar() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -71,6 +71,7 @@ export function Navbar() {
         {/* Actions */}
         <div className="flex items-center gap-1.5">
           <Button
+            type="button"
             variant="ghost"
             size="icon"
             className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white"
@@ -85,6 +86,7 @@ export function Navbar() {
 
           {mounted && (
             <Button
+              type="button"
               variant="ghost"
               size="icon"
               className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white"
@@ -96,20 +98,21 @@ export function Navbar() {
           )}
 
           {session ? (
-            <Link href="/admin">
-              <Button variant="ghost" size="icon" className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white" title={t('nav.dashboard')}>
+            <Button asChild variant="ghost" size="icon" className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white cursor-pointer" title={t('nav.dashboard')}>
+              <Link href="/admin">
                 <Shield className="h-4 w-4 stroke-[1.8]" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           ) : (
-            <Link href="/admin/login">
-              <Button variant="ghost" size="icon" className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white" title={t('nav.login')}>
+            <Button asChild variant="ghost" size="icon" className="text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4] dark:hover:text-white cursor-pointer" title={t('nav.login')}>
+              <Link href="/admin/login">
                 <Shield className="h-4 w-4 stroke-[1.8]" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           )}
 
           <Button
+            type="button"
             variant="ghost"
             size="icon"
             className="md:hidden text-[#2477A8] hover:bg-white/40 dark:text-[#A7ADB4]"
