@@ -5,6 +5,7 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { type Language, translations, type TranslationKey } from '@/lib/i18n';
 import { supabase, type Profile } from '@/lib/supabase';
 import type { Session } from '@supabase/supabase-js';
+import { safeTimeoutSignal } from '@/lib/utils';
 
 // ---- Theme Provider (wraps next-themes) ----
 export function ThemeProvider({ children, ...props }: React.ComponentProps<typeof NextThemesProvider>) {
@@ -101,6 +102,7 @@ export function ColorProvider({ children }: { children: React.ReactNode }) {
 }
 
 function applyHue(h: number) {
+  if (typeof window === 'undefined') return;
   const root = document.documentElement;
   // Apply vibrant primary accent hue
   root.style.setProperty('--primary', `${h} 65% 42%`);
@@ -132,8 +134,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Safety timeout: iOS Safari may silently fail getSession() due to ITP/cookie restrictions.
+    // If auth check takes > 10s, force loading=false so the app doesn't stay frozen.
+    const safetyTimer = setTimeout(() => setLoading(false), 10000);
+
     supabase.auth.getSession().then(({ data }) => {
+      clearTimeout(safetyTimer);
       setSession(data.session);
+      setLoading(false);
+    }).catch(() => {
+      clearTimeout(safetyTimer);
       setLoading(false);
     });
 
@@ -144,16 +154,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })();
     });
 
-    return () => listener.subscription.unsubscribe();
+    return () => {
+      clearTimeout(safetyTimer);
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error?.message || null };
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      return { error: error?.message || null };
+    } catch (err: any) {
+      return { error: err?.message || 'Login failed. Please check your network connection.' };
+    }
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch {}
     setSession(null);
   };
 
@@ -185,9 +204,12 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
 
   const loadProfile = useCallback(async () => {
     try {
-      const { data, error } = await supabase.from('profiles').select('*')
-        .order('created_at', { ascending: true }).order('id', { ascending: true }).limit(1).maybeSingle();
-      if (!error) setProfile(data as Profile | null);
+      const signal = safeTimeoutSignal(8000);
+      let query = supabase.from('profiles').select('*')
+        .order('created_at', { ascending: true }).order('id', { ascending: true }).limit(1);
+      if (signal) query = query.abortSignal(signal);
+      const { data, error } = await query.maybeSingle();
+      if (!error && data) setProfile(data as Profile | null);
     } catch {
       // Preserve the last successfully loaded profile during network failures.
     } finally {

@@ -127,15 +127,16 @@
   * {
     @apply border-border;
   }
-  html, body {
-    max-width: 100%;
-    overflow-x: clip;
-    -webkit-overflow-scrolling: touch;
-  }
   html {
+    /* overflow-x: clip does NOT create a scroll container (unlike hidden),
+       so iOS Safari touch events are never trapped by the html element. */
+    overflow-x: clip;
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
   body {
+    /* overflow-x: clip on body as well — safe on iOS, no touch capture side-effect. */
+    overflow-x: clip;
     min-height: 100vh;
     min-height: 100dvh;
     color: var(--text-primary);
@@ -143,11 +144,18 @@
     background-image: linear-gradient(135deg, #AADDFC 0%, #C2E6FC 50%, #DAF1FD 100%);
     background-attachment: scroll;
     transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   .dark body {
     background-color: #111315;
     background-image: none;
     color: #F5F7F8;
+  }
+  /* Ensure all interactive elements are touch-friendly on iOS Safari */
+  button, [role="button"], a, input, select, textarea, label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
