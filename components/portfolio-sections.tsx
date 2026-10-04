@@ -14,7 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CVExport } from '@/components/cv-export';
 import { ItemDetailsDialog } from '@/components/item-details-dialog';
 import { useProfile } from '@/contexts/app-context';
-import { cn } from '@/lib/utils';
+import { cn, safeTimeoutSignal } from '@/lib/utils';
 import { toast } from 'sonner';
 import { VisualIdentityImage } from '@/components/visual-identity-image';
 
@@ -42,6 +42,7 @@ export function PortfolioSections() {
     loadContactSettings();
 
     const handleHashChange = () => {
+      if (typeof window === 'undefined') return;
       const hash = window.location.hash.replace('#', '');
       if (['projects', 'awards', 'certificates', 'research', 'other'].includes(hash)) {
         setActiveCategory(hash);
@@ -56,15 +57,37 @@ export function PortfolioSections() {
   }, []);
 
   const loadContactSettings = useCallback(async () => {
-    const { data } = await supabase.from('contact_settings').select('*').limit(1).maybeSingle();
-    if (data) setContactSettings(data as ContactSettings);
+    const hardDeadline = setTimeout(() => {}, 5000); // just for symmetry; no state to force
+    try {
+      const signal = safeTimeoutSignal(4000);
+      let query = supabase.from('contact_settings').select('*').limit(1);
+      if (signal) query = query.abortSignal(signal);
+      const { data, error } = await query.maybeSingle();
+      if (!error && data) setContactSettings(data as ContactSettings);
+    } catch (err) {
+      console.error('Failed to load contact settings:', err);
+    } finally {
+      clearTimeout(hardDeadline);
+    }
   }, []);
 
   const loadItems = useCallback(async () => {
-    const { data } = await supabase.from('items').select('*').order('sort_order', { ascending: true });
-    setItems((data as Item[]) || []);
-    setLoading(false);
+    // Hard deadline: force loading=false after 6s on iOS Safari where fetch may silently hang.
+    const hardDeadline = setTimeout(() => setLoading(false), 6000);
+    try {
+      const signal = safeTimeoutSignal(5000);
+      let query = supabase.from('items').select('*').order('sort_order', { ascending: true });
+      if (signal) query = query.abortSignal(signal);
+      const { data, error } = await query;
+      if (!error && data) setItems((data as Item[]) || []);
+    } catch (err) {
+      console.error('Failed to load items:', err);
+    } finally {
+      clearTimeout(hardDeadline);
+      setLoading(false);
+    }
   }, []);
+
 
   const years = useMemo(() => {
     const set = new Set<number>();
@@ -217,17 +240,17 @@ export function PortfolioSections() {
                 </p>
               )}
               <div className="flex flex-wrap gap-3 justify-center">
-                <a href="#projects">
-                  <Button variant="brand" size="lg" className="rounded-full shadow-md font-semibold">
+                <Button asChild variant="brand" size="lg" className="rounded-full shadow-md font-semibold cursor-pointer">
+                  <a href="#projects">
                     {t('hero.viewWork')}
                     <ArrowRight className="ml-2 h-4 w-4 rtl:rotate-180" />
-                  </Button>
-                </a>
-                <a href="#contact">
-                  <Button variant="pill" size="lg" className="rounded-full shadow-xs font-medium">
+                  </a>
+                </Button>
+                <Button asChild variant="pill" size="lg" className="rounded-full shadow-xs font-medium cursor-pointer">
+                  <a href="#contact">
                     {t('hero.contact')}
-                  </Button>
-                </a>
+                  </a>
+                </Button>
                 <CVExport profile={profile} items={items} />
               </div>
 
@@ -268,12 +291,12 @@ export function PortfolioSections() {
                     }
 
                     return (
-                      <a key={key} href={url} target="_blank" rel="noopener noreferrer">
-                        <Button variant="pill" size="pill" className="gap-2 text-xs font-medium hover:border-primary hover:text-primary transition-all shadow-xs">
+                      <Button asChild key={key} variant="pill" size="pill" className="gap-2 text-xs font-medium hover:border-primary hover:text-primary transition-all shadow-xs cursor-pointer">
+                        <a href={url} target="_blank" rel="noopener noreferrer">
                           <Icon className="h-3.5 w-3.5 text-primary" />
                           <span>{displayName}</span>
-                        </Button>
-                      </a>
+                        </a>
+                      </Button>
                     );
                   })}
                 </div>
@@ -283,48 +306,48 @@ export function PortfolioSections() {
               {contactSettings && (
                 <div className="flex flex-wrap gap-2.5 justify-center mt-5">
                   {contactSettings.phone_visible && contactSettings.phone && (
-                    <a
-                      href={`https://wa.me/${contactSettings.phone.replace(/[^0-9]/g, '')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                    <Button asChild variant="pill" size="pill" className="gap-2 text-xs font-medium cursor-pointer">
+                      <a
+                        href={`https://wa.me/${contactSettings.phone.replace(/[^0-9]/g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
                         WhatsApp
-                      </Button>
-                    </a>
+                      </a>
+                    </Button>
                   )}
                   {contactSettings.phone_visible && contactSettings.phone && (
-                    <a href={`tel:${contactSettings.phone}`}>
-                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                    <Button asChild variant="pill" size="pill" className="gap-2 text-xs font-medium cursor-pointer">
+                      <a href={`tel:${contactSettings.phone}`}>
                         <Phone className="h-3.5 w-3.5 text-brandPrimary" />
                         Call
-                      </Button>
-                    </a>
+                      </a>
+                    </Button>
                   )}
                   {contactSettings.email_visible && contactSettings.email && (
-                    <a href={`mailto:${contactSettings.email}`}>
-                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                    <Button asChild variant="pill" size="pill" className="gap-2 text-xs font-medium cursor-pointer">
+                      <a href={`mailto:${contactSettings.email}`}>
                         <Mail className="h-3.5 w-3.5 text-blue-600" />
                         Email
-                      </Button>
-                    </a>
+                      </a>
+                    </Button>
                   )}
                   {contactSettings.github_visible && contactSettings.github && (
-                    <a href={contactSettings.github} target="_blank" rel="noopener noreferrer">
-                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                    <Button asChild variant="pill" size="pill" className="gap-2 text-xs font-medium cursor-pointer">
+                      <a href={contactSettings.github} target="_blank" rel="noopener noreferrer">
                         <Github className="h-3.5 w-3.5" />
                         GitHub
-                      </Button>
-                    </a>
+                      </a>
+                    </Button>
                   )}
                   {contactSettings.linkedin_visible && contactSettings.linkedin && (
-                    <a href={contactSettings.linkedin} target="_blank" rel="noopener noreferrer">
-                      <Button variant="pill" size="pill" className="gap-2 text-xs font-medium">
+                    <Button asChild variant="pill" size="pill" className="gap-2 text-xs font-medium cursor-pointer">
+                      <a href={contactSettings.linkedin} target="_blank" rel="noopener noreferrer">
                         <Linkedin className="h-3.5 w-3.5 text-sky-600" />
                         LinkedIn
-                      </Button>
-                    </a>
+                      </a>
+                    </Button>
                   )}
                 </div>
               )}

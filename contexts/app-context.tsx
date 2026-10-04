@@ -203,8 +203,10 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const loadProfile = useCallback(async () => {
+    // Hard deadline: force loading=false after 6s on iOS Safari where fetch may silently hang.
+    const hardDeadline = setTimeout(() => setLoading(false), 6000);
     try {
-      const signal = safeTimeoutSignal(8000);
+      const signal = safeTimeoutSignal(5000);
       let query = supabase.from('profiles').select('*')
         .order('created_at', { ascending: true }).order('id', { ascending: true }).limit(1);
       if (signal) query = query.abortSignal(signal);
@@ -213,6 +215,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // Preserve the last successfully loaded profile during network failures.
     } finally {
+      clearTimeout(hardDeadline);
       setLoading(false);
     }
   }, []);
@@ -220,17 +223,19 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const reload = () => { void loadProfile(); };
     reload();
-    window.addEventListener('focus', reload);
-    window.addEventListener('portfolio-profile-updated', reload);
-    // Refresh returning visitors without requiring Supabase Realtime configuration.
-    const timer = window.setInterval(() => {
-      if (document.visibilityState === 'visible') reload();
-    }, 60000);
-    return () => {
-      window.removeEventListener('focus', reload);
-      window.removeEventListener('portfolio-profile-updated', reload);
-      window.clearInterval(timer);
-    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('focus', reload);
+      window.addEventListener('portfolio-profile-updated', reload);
+      // Refresh returning visitors without requiring Supabase Realtime configuration.
+      const timer = window.setInterval(() => {
+        if (document.visibilityState === 'visible') reload();
+      }, 60000);
+      return () => {
+        window.removeEventListener('focus', reload);
+        window.removeEventListener('portfolio-profile-updated', reload);
+        window.clearInterval(timer);
+      };
+    }
   }, [loadProfile]);
 
   return (
