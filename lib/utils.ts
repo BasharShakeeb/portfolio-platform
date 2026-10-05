@@ -5,25 +5,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/** Safe AbortSignal.timeout helper that works on iOS Safari < 16 and in-app webviews */
+/** Safe timeout signal helper that works across all mobile browsers including iOS Safari */
 export function safeTimeoutSignal(ms: number): AbortSignal | undefined {
-  if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
-    try {
-      return AbortSignal.timeout(ms);
-    } catch {
-      // Fallback to AbortController
-    }
-  }
   if (typeof AbortController !== 'undefined') {
-    const controller = new AbortController();
-    setTimeout(() => {
-      try {
-        controller.abort();
-      } catch {
-        // Ignore abort errors
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => {
+        try {
+          controller.abort();
+        } catch {
+          // Ignore abort errors
+        }
+      }, ms);
+      if (typeof controller.signal.addEventListener === 'function') {
+        controller.signal.addEventListener('abort', () => clearTimeout(timer), { once: true });
       }
-    }, ms);
-    return controller.signal;
+      return controller.signal;
+    } catch {
+      // Fallback
+    }
   }
   return undefined;
 }
